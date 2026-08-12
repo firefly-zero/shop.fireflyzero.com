@@ -1,39 +1,28 @@
-import preactLogo from "../../assets/preact.svg";
-import "./style.css";
+import { Icon } from "../../components/Icon";
 
 export function Home() {
+  const items = ["Firefly Zero", "T-Shirt", "Sticker"];
+  const cards = items.map((item) => (
+    <div class="col">
+      <article class="card">
+        <div class="card-body">
+          <h4 class="card-title">{item}</h4>
+          <p class="card-text">Hello world!</p>
+        </div>
+        <div class="card-footer">
+          <a href="#" class="btn btn-primary">
+            <Icon>info-circle</Icon> info
+          </a>
+          <a href="#" class="btn btn-primary">
+            <Icon>cart-plus</Icon> buy
+          </a>
+        </div>
+      </article>
+    </div>
+  ));
   return (
     <div class="home">
-      <a href="https://preactjs.com" target="_blank">
-        <img src={preactLogo} alt="Preact logo" height="160" width="160" />
-      </a>
-      <h1>Get Started building Vite-powered Preact Apps </h1>
-      <section>
-        <Resource
-          title="Learn Preact"
-          description="If you're new to Preact, try the interactive tutorial to learn important concepts"
-          href="https://preactjs.com/tutorial"
-        />
-        <Resource
-          title="Differences to React"
-          description="If you're coming from React, you may want to check out our docs to see where Preact differs"
-          href="https://preactjs.com/guide/v10/differences-to-react"
-        />
-        <Resource
-          title="Learn Vite"
-          description="To learn more about Vite and how you can customize it to fit your needs, take a look at their excellent documentation"
-          href="https://vitejs.dev"
-        />
-      </section>
+      <section class="row row-cols-3 g-2">{cards}</section>
     </div>
-  );
-}
-
-function Resource(props) {
-  return (
-    <a href={props.href} target="_blank" class="resource">
-      <h2>{props.title}</h2>
-      <p>{props.description}</p>
-    </a>
   );
 }

@@ -1,22 +1,26 @@
 import { useLocation } from "preact-iso";
-import { icon } from "../html-utils";
+import { Icon } from "./Icon";
 
 export function Header() {
   const { url } = useLocation();
 
   return (
-    <header class="row justify-content-between align-items-end">
+    <header class="row justify-content-between align-items-end mb-2">
       <h1 class="col">Firefly Zero Shop</h1>
       <nav class="col text-end lead">
         <a href="https://fireflyzero.com" target="_blank" class="btn btn-secondary">
-          <i class={icon("circle-info")}></i> about
+          <Icon>circle-info</Icon> about
         </a>
-        <a href="/" class="btn btn-secondary">
-          <i class={icon("shirt")}></i> products
-        </a>
-        <a href="/" class="btn btn-primary">
-          <i class={icon("cart-shopping")}></i> basket
-        </a>
+        {url !== "/" && (
+          <a href="/" class="btn btn-secondary">
+            <Icon>shirt</Icon> products
+          </a>
+        )}
+        {url !== "/basket" && (
+          <a href="/basket" class="btn btn-primary">
+            <Icon>cart-shopping</Icon> basket
+          </a>
+        )}
       </nav>
     </header>
   );
