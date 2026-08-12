@@ -1,15 +1,5 @@
-# `create-preact`
+# shop.fireflyzero.com
 
-<h2 align="center">
-  <img height="256" width="256" src="./src/assets/preact.svg">
-</h2>
+Frontend source code for [shop.fireflyzero.com](https://shop.fireflyzero.com), the [Firefly Zero](https://fireflyzero.com) web shop.
 
-<h3 align="center">Get started using Preact and Vite!</h3>
-
-## Getting Started
-
-- `npm run dev` - Starts a dev server at http://localhost:5173/
-
-- `npm run build` - Builds for production, emitting to `dist/`. Prerenders all found routes in app to static HTML
-
-- `npm run preview` - Starts a server at http://localhost:4173/ to test production build locally
+Written in TypeScript using [Preact](https://preactjs.com/) framework and [Vite](https://vite.dev/) build tool.
