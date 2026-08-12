@@ -6,7 +6,7 @@ export function Header() {
 
   return (
     <header class="row justify-content-between align-items-end mb-2">
-      <h1 class="col">Firefly Zero Shop</h1>
+      <h1 class="col">Firefly Zero shop</h1>
       <nav class="col text-end lead">
         <a href="https://fireflyzero.com" target="_blank" class="btn btn-secondary">
           <Icon>circle-info</Icon> about

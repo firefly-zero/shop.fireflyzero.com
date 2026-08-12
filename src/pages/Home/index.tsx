@@ -20,9 +20,5 @@ export function Home() {
       </article>
     </div>
   ));
-  return (
-    <div class="home">
-      <section class="row row-cols-3 g-2">{cards}</section>
-    </div>
-  );
+  return <section class="row row-cols-3 g-2">{cards}</section>;
 }
