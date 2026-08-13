@@ -1,9 +1,22 @@
 import { TargetedSubmitEvent } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
+import { supabase } from "../supabase";
+import { useLocation } from "preact-iso";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { route } = useLocation();
+
+  useEffect(() => {
+    const task = async () => {
+      const user = await supabase.auth.getUser();
+      if (user.data) {
+        route("/cart");
+      }
+    };
+    task();
+  });
 
   const onSubmit = (e: TargetedSubmitEvent<HTMLFormElement>) => {
     // ...

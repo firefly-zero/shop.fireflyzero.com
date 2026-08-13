@@ -6,6 +6,7 @@ import { SignIn } from "./pages/sign-in.js";
 import { NotFound } from "./pages/_404.jsx";
 import "./style.css";
 import { Footer } from "./components/footer.js";
+import { Cart } from "./pages/cart.js";
 
 export function App() {
   return (
@@ -15,6 +16,7 @@ export function App() {
         <Router>
           <Route path="/" component={Home} />
           <Route path="/sign-in" component={SignIn} />
+          <Route path="/cart" component={Cart} />
           <Route default component={NotFound} />
         </Router>
       </main>
