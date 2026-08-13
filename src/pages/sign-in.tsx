@@ -11,7 +11,7 @@ export function SignIn() {
   useEffect(() => {
     const task = async () => {
       const user = await supabase.auth.getUser();
-      if (user.data) {
+      if (user.data?.user) {
         route("/cart");
       }
     };
@@ -19,7 +19,28 @@ export function SignIn() {
   });
 
   const onSubmit = (e: TargetedSubmitEvent<HTMLFormElement>) => {
-    // ...
+    const task = async () => {
+      const resp = await supabase.auth.signInWithPassword({ email, password });
+
+      if (resp.error?.code === "user_not_found") {
+        const resp = await supabase.auth.signUp({ email, password });
+        if (resp.error) {
+          // ...
+        }
+        if (resp.data) {
+          route("/cart");
+        }
+        return;
+      }
+
+      if (resp.error) {
+        // ...
+      }
+      if (resp.data) {
+        route("/cart");
+      }
+    };
+    task();
     e.currentTarget.reset();
   };
   const valid = email.length >= 6 && email.search("@") >= 1 && password.length >= 8;
