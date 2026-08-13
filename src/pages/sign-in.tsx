@@ -1,15 +1,15 @@
 import { TargetedSubmitEvent } from "preact";
+import { useState } from "preact/hooks";
 
 export function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   const onSubmit = (e: TargetedSubmitEvent<HTMLFormElement>) => {
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
-    if (!email || !password) {
-      return;
-    }
+    // ...
     e.currentTarget.reset();
   };
+  const valid = email.length >= 6 && email.search("@") >= 1 && password.length >= 8;
 
   return (
     <div class="row justify-content-center">
@@ -24,6 +24,7 @@ export function SignIn() {
               type="email"
               id="email-input"
               class="form-control"
+              onInput={(e) => setEmail(e.currentTarget.value)}
               required
               minLength={6}
               maxLength={128}
@@ -39,13 +40,14 @@ export function SignIn() {
               type="password"
               id="password-input"
               class="form-control"
+              onInput={(e) => setPassword(e.currentTarget.value)}
               required
               minLength={8}
               maxLength={128}
             />
           </div>
 
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary" disabled={!valid}>
             sign in / sign up
           </button>
           <p class="text-center">
