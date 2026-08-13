@@ -1,5 +1,5 @@
 import { useLocation } from "preact-iso";
-import { Icon } from "./Icon";
+import { Icon } from "./icon";
 
 export function Header() {
   const { url } = useLocation();

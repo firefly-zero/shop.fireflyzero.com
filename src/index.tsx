@@ -1,11 +1,11 @@
 import { LocationProvider, Router, Route, hydrate, prerender as ssr } from "preact-iso";
 
-import { Header } from "./components/Header.jsx";
+import { Header } from "./components/header.js";
 import { Home } from "./pages/home.js";
 import { SignIn } from "./pages/sign-in.js";
 import { NotFound } from "./pages/_404.jsx";
 import "./style.css";
-import { Footer } from "./components/Footer.js";
+import { Footer } from "./components/footer.js";
 
 export function App() {
   return (
