@@ -1,7 +1,8 @@
 import { LocationProvider, Router, Route, hydrate, prerender as ssr } from "preact-iso";
 
 import { Header } from "./components/Header.jsx";
-import { Home } from "./pages/Home.jsx";
+import { Home } from "./pages/home.js";
+import { SignIn } from "./pages/sign-in.js";
 import { NotFound } from "./pages/_404.jsx";
 import "./style.css";
 import { Footer } from "./components/Footer.js";
@@ -13,6 +14,7 @@ export function App() {
       <main>
         <Router>
           <Route path="/" component={Home} />
+          <Route path="/sign-in" component={SignIn} />
           <Route default component={NotFound} />
         </Router>
       </main>

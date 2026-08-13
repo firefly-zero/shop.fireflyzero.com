@@ -17,7 +17,7 @@ export function Header() {
           </a>
         )}
         {url !== "/basket" && (
-          <a href="/basket" class="btn btn-primary">
+          <a href="/sign-in" class="btn btn-primary">
             <Icon>cart-shopping</Icon> basket
           </a>
         )}
