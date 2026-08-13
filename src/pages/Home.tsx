@@ -1,4 +1,4 @@
-import { Icon } from "../../components/Icon";
+import { Icon } from "../components/Icon";
 
 export function Home() {
   const items = ["Firefly Zero", "T-Shirt", "Sticker"];
