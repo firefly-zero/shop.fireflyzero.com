@@ -25,6 +25,13 @@ export function Home() {
     return (
       <div class="col">
         <article class="card">
+          {item.attributes.image && (
+            <img
+              src={item.attributes.image}
+              class="card-img-top"
+              style="object-fit: cover; aspect-ratio: 3/2"
+            />
+          )}
           <div class="card-body">
             <h4 class="card-title">
               {name}
