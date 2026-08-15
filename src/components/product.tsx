@@ -6,9 +6,6 @@ export const Product: FunctionComponent<{ children: any }> = (props) => {
   const variants: any[] = item.attributes.variants;
 
   const name: string = item.attributes.name;
-  if (name.toLowerCase().indexOf("donation") >= 0) {
-    return;
-  }
   const price = formatPrice(variants);
   const footer = formatFooter(variants);
   return (
@@ -43,7 +40,7 @@ function formatPrice(variants: any[]) {
   let allPricesTheSame = variants.every(
     (variant) => variant.attributes.price === firstPrice,
   );
-  if (allPricesTheSame) {
+  if (allPricesTheSame && firstPrice != 0) {
     return <>€{firstPrice / 100}</>;
   } else {
     return <></>;
@@ -55,6 +52,26 @@ function formatFooter(variants: any[]) {
   let allPricesTheSame = variants.every(
     (variant) => variant.attributes.price === firstPrice,
   );
+
+  if (firstPrice == 0) {
+    return (
+      <div class="row justify-content-between">
+        <div class="col">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="price-input">
+              €
+            </span>
+            <input type="text" class="form-control" id="price-input" />
+          </div>
+        </div>
+        <div class="col">
+          <a href="#" class="btn btn-primary" style="display: block; float: right">
+            <Icon>cart-plus</Icon> add to card
+          </a>
+        </div>
+      </div>
+    );
+  }
 
   if (variants.length == 1) {
     return (
