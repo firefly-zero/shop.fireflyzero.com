@@ -13,5 +13,5 @@ export function Home() {
     return <Loading />;
   }
   const cards = query.data.map((item: any) => <Product>{item}</Product>);
-  return <section class="row row-cols-2 g-2">{cards}</section>;
+  return <section class="row row-cols-1 row-cols-lg-2 g-2">{cards}</section>;
 }

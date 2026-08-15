@@ -10,7 +10,7 @@ export const Product: FunctionComponent<{ children: any }> = (props) => {
   const footer = formatFooter(variants);
   return (
     <div class="col">
-      <article class="card">
+      <article class="card h-100">
         {item.attributes.image && (
           <img
             src={item.attributes.image}
@@ -61,7 +61,13 @@ function formatFooter(variants: any[]) {
             <span class="input-group-text" id="price-input">
               €
             </span>
-            <input type="text" class="form-control" id="price-input" />
+            <input
+              type="number"
+              class="form-control"
+              id="price-input"
+              value={5}
+              min={1}
+            />
           </div>
         </div>
         <div class="col">
