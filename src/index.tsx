@@ -7,20 +7,24 @@ import { NotFound } from "./pages/_404.jsx";
 import "./style.css";
 import { Footer } from "./components/footer.js";
 import { Cart } from "./pages/cart.js";
+import { QueryClientProvider } from "@tanstack/preact-query";
+import { queryClient } from "./api.js";
 
 export function App() {
   return (
     <LocationProvider>
-      <Header />
-      <main>
-        <Router>
-          <Route path="/" component={Home} />
-          <Route path="/sign-in" component={SignIn} />
-          <Route path="/cart" component={Cart} />
-          <Route default component={NotFound} />
-        </Router>
-      </main>
-      <Footer />
+      <QueryClientProvider client={queryClient}>
+        <Header />
+        <main>
+          <Router>
+            <Route path="/" component={Home} />
+            <Route path="/sign-in" component={SignIn} />
+            <Route path="/cart" component={Cart} />
+            <Route default component={NotFound} />
+          </Router>
+        </main>
+        <Footer />
+      </QueryClientProvider>
     </LocationProvider>
   );
 }

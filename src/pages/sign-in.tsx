@@ -10,8 +10,8 @@ export function SignIn() {
 
   useEffect(() => {
     const task = async () => {
-      const user = await supabase.auth.getUser();
-      if (user.data?.user) {
+      const user = await supabase.auth.getSession();
+      if (user.data?.session) {
         route("/cart");
       }
     };

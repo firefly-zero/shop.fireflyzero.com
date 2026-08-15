@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.3",
+    "@tanstack/preact-query": "^5.101.4",
     "preact": "^10.26.9",
     "preact-iso": "^2.12.2",
     "preact-render-to-string": "^6.7.0"
