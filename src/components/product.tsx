@@ -1,20 +1,20 @@
 import { FunctionComponent, VNode } from "preact";
 import { Icon } from "./icon";
 import { Product, Variant } from "../types";
+import { cart } from "../cart";
 
 export const ProductCard: FunctionComponent<{ children: Product }> = (props) => {
-  const item = props.children;
-  const variants = item.attributes.variants;
-
-  const name: string = item.attributes.name;
+  const product = props.children;
+  const variants = product.attributes.variants;
+  const name: string = product.attributes.name;
   const price = formatPrice(variants);
-  const footer = formatFooter(variants);
+  const footer = formatFooter(product);
   return (
     <div class="col">
       <article class="card h-100">
-        {item.attributes.image && (
+        {product.attributes.image && (
           <img
-            src={item.attributes.image}
+            src={product.attributes.image}
             class="card-img-top"
             style="object-fit: cover; aspect-ratio: 3/2"
           />
@@ -28,7 +28,7 @@ export const ProductCard: FunctionComponent<{ children: Product }> = (props) => 
               </span>
             )}
           </h4>
-          <p class="card-text">{item.attributes.description}</p>
+          <p class="card-text">{product.attributes.description}</p>
         </div>
         <div class="card-footer">{footer}</div>
       </article>
@@ -48,7 +48,8 @@ function formatPrice(variants: Variant[]) {
   }
 }
 
-function formatFooter(variants: Variant[]) {
+function formatFooter(product: Product) {
+  const variants = product.attributes.variants;
   let firstPrice = variants[0].attributes.price;
   let allPricesTheSame = variants.every(
     (variant) => variant.attributes.price === firstPrice,
@@ -81,11 +82,16 @@ function formatFooter(variants: Variant[]) {
   }
 
   if (variants.length == 1) {
+    const variant = product.attributes.variants[0];
     return (
       <div class="col">
-        <a href="#" class="btn btn-primary" style="display: block; float: right">
+        <button
+          class="btn btn-primary"
+          style="display: block; float: right"
+          onClick={() => cart.add({ product, variant, qty: 1 })}
+        >
           <Icon>cart-plus</Icon> add to cart
-        </a>
+        </button>
       </div>
     );
   }

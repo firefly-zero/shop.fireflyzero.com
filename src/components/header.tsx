@@ -2,6 +2,7 @@ import { useLocation } from "preact-iso";
 import { Icon } from "./icon";
 import { useAuth } from "./auth";
 import { supabase } from "../supabase";
+import { cart } from "../cart";
 
 export function Header() {
   const { url, route } = useLocation();
@@ -11,6 +12,12 @@ export function Header() {
     supabase.auth.signOut();
     route("/");
   };
+
+  let cartSuffix = <></>;
+  const cartSize = cart.list().length;
+  if (cartSize > 0) {
+    cartSuffix = <span class="text-muted">({cartSize})</span>;
+  }
 
   return (
     <header class="row justify-content-between align-items-end mb-2">
@@ -31,7 +38,7 @@ export function Header() {
             </a>
             {url !== "/cart" && (
               <a href="/cart" class="btn btn-primary">
-                <Icon>cart-shopping</Icon> cart
+                <Icon>cart-shopping</Icon> cart {cartSuffix}
               </a>
             )}
           </>
@@ -42,7 +49,7 @@ export function Header() {
                 <Icon>right-from-bracket</Icon> sign in
               </a>
               <a href="/sign-in" class="btn btn-primary">
-                <Icon>cart-shopping</Icon> cart
+                <Icon>cart-shopping</Icon> cart {cartSuffix}
               </a>
             </>
           )

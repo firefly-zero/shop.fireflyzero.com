@@ -1,6 +1,5 @@
 import { api } from "../api";
 import { Alert } from "../components/alert";
-import { Icon } from "../components/icon";
 import { Loading } from "../components/loading";
 import { ProductCard } from "../components/product";
 import { Product } from "../types";

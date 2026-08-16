@@ -17,3 +17,9 @@ export interface Product {
     variants: Variant[];
   };
 }
+
+export interface CartItem {
+  product: Product;
+  variant: Variant;
+  qty: number;
+}
