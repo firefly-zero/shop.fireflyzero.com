@@ -4,23 +4,27 @@ import { useLocation } from "preact-iso";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { supabase } from "../supabase";
 
-const AuthContext = createContext<JwtPayload | null>(null);
+interface User {
+  email: string;
+}
 
-export function useAuth(): JwtPayload | null {
+const AuthContext = createContext<User | null>(null);
+
+export function useAuth(): User | null {
   return useContext(AuthContext);
 }
 
 export const Auth: FunctionComponent<{ children: ComponentChildren }> = (props) => {
-  const [claims, setClaims] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
   const { route } = useLocation();
 
   useEffect(() => {
     const task = async () => {
       // Check for existing session using getClaims
       const resp = await supabase.auth.getClaims();
-      const claims = resp.data?.claims;
-      if (claims) {
-        setClaims(claims);
+      const user = resp.data?.claims;
+      if (user?.email) {
+        setUser({ email: user.email });
       }
     };
     task();
@@ -28,22 +32,20 @@ export const Auth: FunctionComponent<{ children: ComponentChildren }> = (props) 
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(() => {
-      supabase.auth.getClaims().then((resp) => {
-        const newClaims = resp.data?.claims;
-        const loggedOut = !!claims && !newClaims;
-        const loggedIn = !claims && !!newClaims;
-        setClaims(newClaims);
-        if (loggedOut) {
-          route("/");
-        }
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user.email) {
+        const loggedIn = !user;
+        setUser({ email: session?.user.email });
         if (loggedIn) {
           route("/cart");
         }
-      });
+      } else {
+        setUser(null);
+        route("/");
+      }
     });
     return () => subscription.unsubscribe();
   }, []);
 
-  return <AuthContext.Provider value={claims}>{props.children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={user}>{props.children}</AuthContext.Provider>;
 };
