@@ -3,17 +3,18 @@ import { useContext, useEffect, useState } from "preact/hooks";
 import { supabase } from "../supabase";
 
 interface User {
-  email: string;
+  email?: string;
+  loading: boolean;
 }
 
-const AuthContext = createContext<User | null>(null);
+const AuthContext = createContext<User>({ loading: true });
 
-export function useAuth(): User | null {
+export function useAuth(): User {
   return useContext(AuthContext);
 }
 
 export const Auth: FunctionComponent<{ children: ComponentChildren }> = (props) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User>({ loading: true });
 
   useEffect(() => {
     const task = async () => {
@@ -21,7 +22,7 @@ export const Auth: FunctionComponent<{ children: ComponentChildren }> = (props) 
       const resp = await supabase.auth.getClaims();
       const user = resp.data?.claims;
       if (user?.email) {
-        setUser({ email: user.email });
+        setUser({ email: user.email, loading: false });
       }
     };
     task();
@@ -31,9 +32,9 @@ export const Auth: FunctionComponent<{ children: ComponentChildren }> = (props) 
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user.email) {
-        setUser({ email: session?.user.email });
+        setUser({ email: session?.user.email, loading: false });
       } else {
-        setUser(null);
+        setUser({ loading: false });
       }
     });
     return () => subscription.unsubscribe();

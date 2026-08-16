@@ -24,7 +24,7 @@ export function Header() {
             <Icon>shirt</Icon> products
           </a>
         )}
-        {auth ? (
+        {auth.email ? (
           <>
             <a class="btn btn-secondary" onClick={signOut}>
               <Icon>right-from-bracket</Icon> sign out

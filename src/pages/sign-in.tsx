@@ -3,22 +3,22 @@ import { supabase } from "../supabase";
 import { useLocation } from "preact-iso";
 import { Alert } from "../components/alert";
 import { Icon } from "../components/icon";
+import { useAuth } from "../components/auth";
+import { Loading } from "../components/loading";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alert, setAlert] = useState<any>(null);
   const { route } = useLocation();
+  const auth = useAuth();
 
-  useEffect(() => {
-    const task = async () => {
-      const user = await supabase.auth.getSession();
-      if (user.data?.session) {
-        route("/cart");
-      }
-    };
-    task();
-  });
+  if (auth.loading) {
+    return <Loading />;
+  }
+  if (auth.email) {
+    route("/cart");
+  }
 
   const signIn = () => {
     const task = async () => {
