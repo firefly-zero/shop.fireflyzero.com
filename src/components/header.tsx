@@ -4,11 +4,12 @@ import { useAuth } from "./auth";
 import { supabase } from "../supabase";
 
 export function Header() {
-  const { url } = useLocation();
+  const { url, route } = useLocation();
   const auth = useAuth();
 
   const signOut = () => {
     supabase.auth.signOut();
+    route("/");
   };
 
   return (
@@ -24,20 +25,27 @@ export function Header() {
           </a>
         )}
         {auth ? (
-          <a class="btn btn-secondary" onClick={signOut}>
-            <Icon>right-from-bracket</Icon> sign out
-          </a>
+          <>
+            <a class="btn btn-secondary" onClick={signOut}>
+              <Icon>right-from-bracket</Icon> sign out
+            </a>
+            {url !== "/cart" && (
+              <a href="/cart" class="btn btn-primary">
+                <Icon>cart-shopping</Icon> cart
+              </a>
+            )}
+          </>
         ) : (
           url !== "/sign-in" && (
-            <a href="/sign-in" class="btn btn-secondary">
-              <Icon>right-from-bracket</Icon> sign in
-            </a>
+            <>
+              <a href="/sign-in" class="btn btn-secondary">
+                <Icon>right-from-bracket</Icon> sign in
+              </a>
+              <a href="/sign-in" class="btn btn-primary">
+                <Icon>cart-shopping</Icon> cart
+              </a>
+            </>
           )
-        )}
-        {url !== "/sign-in" && (
-          <a href="/sign-in" class="btn btn-primary">
-            <Icon>cart-shopping</Icon> cart
-          </a>
         )}
       </nav>
     </header>

@@ -1,6 +1,4 @@
-import { createClient, JwtPayload } from "@supabase/supabase-js";
 import { ComponentChildren, createContext, FunctionComponent } from "preact";
-import { useLocation } from "preact-iso";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { supabase } from "../supabase";
 
@@ -16,7 +14,6 @@ export function useAuth(): User | null {
 
 export const Auth: FunctionComponent<{ children: ComponentChildren }> = (props) => {
   const [user, setUser] = useState<any>(null);
-  const { route } = useLocation();
 
   useEffect(() => {
     const task = async () => {
@@ -34,14 +31,9 @@ export const Auth: FunctionComponent<{ children: ComponentChildren }> = (props) 
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user.email) {
-        const loggedIn = !user;
         setUser({ email: session?.user.email });
-        if (loggedIn) {
-          route("/cart");
-        }
       } else {
         setUser(null);
-        route("/");
       }
     });
     return () => subscription.unsubscribe();
