@@ -1,8 +1,15 @@
 import { useLocation } from "preact-iso";
 import { Icon } from "./icon";
+import { useAuth } from "./auth";
+import { supabase } from "../supabase";
 
 export function Header() {
   const { url } = useLocation();
+  const auth = useAuth();
+
+  const signOut = () => {
+    supabase.auth.signOut();
+  };
 
   return (
     <header class="row justify-content-between align-items-end mb-2">
@@ -15,6 +22,17 @@ export function Header() {
           <a href="/" class="btn btn-secondary">
             <Icon>shirt</Icon> products
           </a>
+        )}
+        {auth ? (
+          <a class="btn btn-secondary" onClick={signOut}>
+            <Icon>right-from-bracket</Icon> sign out
+          </a>
+        ) : (
+          url !== "/sign-in" && (
+            <a href="/sign-in" class="btn btn-secondary">
+              <Icon>right-from-bracket</Icon> sign in
+            </a>
+          )
         )}
         {url !== "/sign-in" && (
           <a href="/sign-in" class="btn btn-primary">

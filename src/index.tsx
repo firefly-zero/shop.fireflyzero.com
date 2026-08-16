@@ -9,21 +9,24 @@ import { Footer } from "./components/footer.js";
 import { Cart } from "./pages/cart.js";
 import { QueryClientProvider } from "@tanstack/preact-query";
 import { queryClient } from "./api.js";
+import { Auth } from "./components/auth.js";
 
 export function App() {
   return (
     <LocationProvider>
       <QueryClientProvider client={queryClient}>
-        <Header />
-        <main>
-          <Router>
-            <Route path="/" component={Home} />
-            <Route path="/sign-in" component={SignIn} />
-            <Route path="/cart" component={Cart} />
-            <Route default component={NotFound} />
-          </Router>
-        </main>
-        <Footer />
+        <Auth>
+          <Header />
+          <main>
+            <Router>
+              <Route path="/" component={Home} />
+              <Route path="/sign-in" component={SignIn} />
+              <Route path="/cart" component={Cart} />
+              <Route default component={NotFound} />
+            </Router>
+          </main>
+          <Footer />
+        </Auth>
       </QueryClientProvider>
     </LocationProvider>
   );
