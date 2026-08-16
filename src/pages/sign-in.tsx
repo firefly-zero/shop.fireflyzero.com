@@ -5,13 +5,35 @@ import { Alert } from "../components/alert";
 import { Icon } from "../components/icon";
 import { useAuth } from "../components/auth";
 import { Loading } from "../components/loading";
+import { useMutation, useQuery } from "@tanstack/preact-query";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [alert, setAlert] = useState<any>(null);
   const { route } = useLocation();
   const auth = useAuth();
+
+  const signIn = useMutation({
+    mutationKey: ["supabase", "signInWithPassword"],
+    mutationFn: async () => {
+      const resp = await supabase.auth.signInWithPassword({ email, password });
+      if (resp.error) {
+        throw resp.error;
+      }
+      return resp.data;
+    },
+  });
+
+  const signUp = useMutation({
+    mutationKey: ["supabase", "signInWithPassword"],
+    mutationFn: async () => {
+      const resp = await supabase.auth.signUp({ email, password });
+      if (resp.error) {
+        throw resp.error;
+      }
+      return resp.data;
+    },
+  });
 
   if (auth.loading) {
     return <Loading />;
@@ -19,42 +41,19 @@ export function SignIn() {
   if (auth.email) {
     route("/cart");
   }
-
-  const signIn = () => {
-    const task = async () => {
-      const resp = await supabase.auth.signInWithPassword({ email, password });
-      if (resp.error) {
-        setAlert(resp.error);
-        return;
-      }
-      if (resp.data) {
-        route("/cart");
-      }
-    };
-    task();
-  };
-
-  const signUp = () => {
-    const task = async () => {
-      const resp = await supabase.auth.signUp({ email, password });
-      if (resp.error) {
-        setAlert(resp.error);
-        return;
-      }
-      if (resp.data) {
-        route("/cart");
-      }
-    };
-    task();
-  };
-
-  const valid = email.length >= 6 && email.search("@") >= 1 && password.length >= 8;
+  const valid =
+    !signIn.isPending &&
+    !signIn.isPending &&
+    email.length >= 6 &&
+    email.search("@") >= 1 &&
+    password.length >= 8;
 
   return (
     <div class="row justify-content-center">
       <div class="col-md-6" style="border: solid 2px black">
         <h2>Let's create your account</h2>
-        {alert && <Alert>{alert}</Alert>}
+        {signIn.error && <Alert>{signIn.error}</Alert>}
+        {signUp.error && <Alert>{signUp.error}</Alert>}
         <form class="row g-1">
           <label for="email-input" class="col-sm-2 col-form-label">
             email
@@ -92,7 +91,7 @@ export function SignIn() {
               type="button"
               class="btn btn-primary w-100"
               disabled={!valid}
-              onClick={signUp}
+              onClick={() => signUp.mutate()}
             >
               <Icon>person-circle-plus</Icon> sign up
             </button>
@@ -102,7 +101,7 @@ export function SignIn() {
               type="button"
               class="btn btn-primary w-100"
               disabled={!valid}
-              onClick={signIn}
+              onClick={() => signIn.mutate()}
             >
               <Icon>right-to-bracket</Icon> sign in
             </button>
