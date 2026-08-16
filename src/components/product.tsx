@@ -2,6 +2,7 @@ import { FunctionComponent, VNode } from "preact";
 import { Icon } from "./icon";
 import { CartItem, Product, Variant } from "../types";
 import { Cart, useCart } from "../cart";
+import { useState } from "preact/hooks";
 
 export const ProductCard: FunctionComponent<{ children: Product }> = (props) => {
   const cart = useCart();
@@ -51,6 +52,8 @@ function formatPrice(variants: Variant[]) {
 }
 
 function formatFooter(cart: Cart, product: Product) {
+  const [qty, setQty] = useState(5);
+
   const variants = product.attributes.variants;
   let firstPrice = variants[0].attributes.price;
   let allPricesTheSame = variants.every(
@@ -58,6 +61,7 @@ function formatFooter(cart: Cart, product: Product) {
   );
 
   if (firstPrice == 0) {
+    const variant = product.attributes.variants[0];
     return (
       <div class="row justify-content-between">
         <div class="col">
@@ -69,15 +73,20 @@ function formatFooter(cart: Cart, product: Product) {
               type="number"
               class="form-control"
               id="price-input"
-              value={5}
+              value={qty}
               min={1}
+              onInput={(e) => setQty(+e.currentTarget.value)}
             />
           </div>
         </div>
         <div class="col">
-          <a href="#" class="btn btn-primary" style="display: block; float: right">
+          <button
+            class="btn btn-primary"
+            style="display: block; float: right"
+            onClick={() => cart.add({ product, variant, qty: qty })}
+          >
             <Icon>cart-plus</Icon> add to cart
-          </a>
+          </button>
         </div>
       </div>
     );
@@ -105,9 +114,13 @@ function formatFooter(cart: Cart, product: Product) {
         {!allPricesTheSame && "€" + variant.attributes.price / 100}
       </div>
       <div class="col">
-        <a href="#" class="btn btn-primary" style="display: block; float: right">
+        <button
+          class="btn btn-primary"
+          style="display: block; float: right"
+          onClick={() => cart.add({ product, variant, qty: 1 })}
+        >
           <Icon>cart-plus</Icon> add to cart
-        </a>
+        </button>
       </div>
     </div>
   ));
