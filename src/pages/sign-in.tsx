@@ -48,13 +48,18 @@ export function SignIn() {
     email.search("@") >= 1 &&
     password.length >= 8;
 
+  const submit = (e: SubmitEvent) => {
+    e.preventDefault();
+    signIn.mutate();
+  };
+
   return (
     <div class="row justify-content-center">
       <div class="col-md-6" style="border: solid 2px black">
         <h2>Let's create your account</h2>
         <Alert>{signIn.error}</Alert>
         <Alert>{signUp.error}</Alert>
-        <form class="row g-1">
+        <form class="row g-1" onSubmit={submit}>
           <label for="email-input" class="col-sm-2 col-form-label">
             email
           </label>
@@ -97,12 +102,7 @@ export function SignIn() {
             </button>
           </div>
           <div class="col-sm-6">
-            <button
-              type="button"
-              class="btn btn-primary w-100"
-              disabled={!buttonsActive}
-              onClick={() => signIn.mutate()}
-            >
+            <button type="submit" class="btn btn-primary w-100" disabled={!buttonsActive}>
               <Icon>right-to-bracket</Icon> sign in
             </button>
           </div>
