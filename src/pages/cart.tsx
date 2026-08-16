@@ -23,18 +23,21 @@ export function Cart() {
   return (
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <h2>Cart</h2>
+        <h2>
+          {" "}
+          <a href="/" class="btn btn-secondary">
+            <Icon>chevron-left</Icon> back
+          </a>{" "}
+          Cart
+        </h2>
         {items}
 
         <p>
           Shipping costs and currency exchange comissions will be calculated on the next
           step.
         </p>
-        <button class="btn btn-danger m-1" onClick={() => cart.clear()}>
-          <Icon>trash</Icon>
-        </button>
-        <button class="btn btn-primary" onClick={() => {}}>
-          <Icon>money-bill-wave</Icon> checkout
+        <button class="btn btn-primary w-100" onClick={() => {}}>
+          <Icon>money-bill-wave</Icon> proceed to checkout
         </button>
       </div>
     </div>

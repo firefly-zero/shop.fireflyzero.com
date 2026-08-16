@@ -22,16 +22,13 @@ export function Header() {
 
   return (
     <header class="row justify-content-between align-items-end mb-2">
-      <h1 class="col">Firefly Zero shop</h1>
+      <h1 class="col">
+        <a href="https://fireflyzero.com/" target="_blank">
+          Firefly Zero
+        </a>{" "}
+        shop
+      </h1>
       <nav class="col text-end lead">
-        <a href="https://fireflyzero.com" target="_blank" class="btn btn-secondary">
-          <Icon>circle-info</Icon> about
-        </a>
-        {url !== "/" && (
-          <a href="/" class="btn btn-secondary">
-            <Icon>shirt</Icon> products
-          </a>
-        )}
         {auth.email ? (
           <>
             <a class="btn btn-secondary" onClick={signOut}>
