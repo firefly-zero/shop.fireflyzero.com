@@ -3,6 +3,7 @@ import { Icon } from "./icon";
 import { CartItem, Product, Variant } from "../types";
 import { Cart, useCart } from "../cart";
 import { useState } from "preact/hooks";
+import { useLocation } from "preact-iso";
 
 export const ProductCard: FunctionComponent<{ children: Product }> = (props) => {
   const cart = useCart();
@@ -80,13 +81,7 @@ function formatFooter(cart: Cart, product: Product) {
           </div>
         </div>
         <div class="col">
-          <button
-            class="btn btn-primary"
-            style="display: block; float: right"
-            onClick={() => cart.add({ product, variant, qty: qty })}
-          >
-            <Icon>cart-plus</Icon> add to cart
-          </button>
+          <div class="col">{formatButton(() => cart.add({ product, variant, qty }))}</div>
         </div>
       </div>
     );
@@ -95,15 +90,7 @@ function formatFooter(cart: Cart, product: Product) {
   if (variants.length == 1) {
     const variant = product.attributes.variants[0];
     return (
-      <div class="col">
-        <button
-          class="btn btn-primary"
-          style="display: block; float: right"
-          onClick={() => cart.add({ product, variant, qty: 1 })}
-        >
-          <Icon>cart-plus</Icon> add to cart
-        </button>
-      </div>
+      <div class="col">{formatButton(() => cart.add({ product, variant, qty: 1 }))}</div>
     );
   }
 
@@ -113,15 +100,34 @@ function formatFooter(cart: Cart, product: Product) {
         <b>{variant.attributes.name}</b>{" "}
         {!allPricesTheSame && "€" + variant.attributes.price / 100}
       </div>
-      <div class="col">
-        <button
-          class="btn btn-primary"
-          style="display: block; float: right"
-          onClick={() => cart.add({ product, variant, qty: 1 })}
-        >
-          <Icon>cart-plus</Icon> add to cart
-        </button>
-      </div>
+      <div class="col">{formatButton(() => cart.add({ product, variant, qty: 1 }))}</div>
     </div>
   ));
+}
+
+function formatButton(onClick: () => void) {
+  const [added, setAdded] = useState(false);
+  const { route } = useLocation();
+
+  if (added) {
+    return (
+      <button
+        class="btn btn-secondary"
+        style="display: block; float: right"
+        onClick={() => route("/cart")}
+      >
+        <Icon>cart-shopping</Icon> go to cart
+      </button>
+    );
+  }
+
+  const add = () => {
+    onClick();
+    setAdded(true);
+  };
+  return (
+    <button class="btn btn-primary" style="display: block; float: right" onClick={add}>
+      <Icon>cart-plus</Icon> add to cart
+    </button>
+  );
 }
