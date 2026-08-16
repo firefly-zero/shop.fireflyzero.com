@@ -41,9 +41,9 @@ export function SignIn() {
   if (auth.email) {
     route("/cart");
   }
-  const valid =
+  const buttonsActive =
     !signIn.isPending &&
-    !signIn.isPending &&
+    !signUp.isPending &&
     email.length >= 6 &&
     email.search("@") >= 1 &&
     password.length >= 8;
@@ -52,8 +52,8 @@ export function SignIn() {
     <div class="row justify-content-center">
       <div class="col-md-6" style="border: solid 2px black">
         <h2>Let's create your account</h2>
-        {signIn.error && <Alert>{signIn.error}</Alert>}
-        {signUp.error && <Alert>{signUp.error}</Alert>}
+        <Alert>{signIn.error}</Alert>
+        <Alert>{signUp.error}</Alert>
         <form class="row g-1">
           <label for="email-input" class="col-sm-2 col-form-label">
             email
@@ -90,7 +90,7 @@ export function SignIn() {
             <button
               type="button"
               class="btn btn-primary w-100"
-              disabled={!valid}
+              disabled={!buttonsActive}
               onClick={() => signUp.mutate()}
             >
               <Icon>person-circle-plus</Icon> sign up
@@ -100,7 +100,7 @@ export function SignIn() {
             <button
               type="button"
               class="btn btn-primary w-100"
-              disabled={!valid}
+              disabled={!buttonsActive}
               onClick={() => signIn.mutate()}
             >
               <Icon>right-to-bracket</Icon> sign in
