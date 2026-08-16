@@ -25,6 +25,17 @@ export function Cart() {
       <div class="col-md-6">
         <h2>Cart</h2>
         {items}
+
+        <p>
+          Shipping costs and currency exchange comissions will be calculated on the next
+          step.
+        </p>
+        <button class="btn btn-danger m-1" onClick={() => cart.clear()}>
+          <Icon>trash</Icon>
+        </button>
+        <button class="btn btn-primary" onClick={() => {}}>
+          <Icon>money-bill-wave</Icon> checkout
+        </button>
       </div>
     </div>
   );
