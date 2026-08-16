@@ -59,7 +59,7 @@ function formatFooter(variants: any[]) {
         <div class="col">
           <div class="input-group mb-3">
             <span class="input-group-text" id="price-input">
-              €
+              <b>€</b>
             </span>
             <input
               type="number"
@@ -72,7 +72,7 @@ function formatFooter(variants: any[]) {
         </div>
         <div class="col">
           <a href="#" class="btn btn-primary" style="display: block; float: right">
-            <Icon>cart-plus</Icon> add to card
+            <Icon>cart-plus</Icon> add to cart
           </a>
         </div>
       </div>
@@ -83,7 +83,7 @@ function formatFooter(variants: any[]) {
     return (
       <div class="col">
         <a href="#" class="btn btn-primary" style="display: block; float: right">
-          <Icon>cart-plus</Icon> add to card
+          <Icon>cart-plus</Icon> add to cart
         </a>
       </div>
     );
@@ -97,7 +97,7 @@ function formatFooter(variants: any[]) {
       </div>
       <div class="col">
         <a href="#" class="btn btn-primary" style="display: block; float: right">
-          <Icon>cart-plus</Icon> add to card
+          <Icon>cart-plus</Icon> add to cart
         </a>
       </div>
     </div>
