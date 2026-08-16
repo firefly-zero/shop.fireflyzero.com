@@ -1,14 +1,16 @@
 import { FunctionComponent, VNode } from "preact";
 import { Icon } from "./icon";
-import { Product, Variant } from "../types";
-import { cart } from "../cart";
+import { CartItem, Product, Variant } from "../types";
+import { Cart, useCart } from "../cart";
 
 export const ProductCard: FunctionComponent<{ children: Product }> = (props) => {
+  const cart = useCart();
+
   const product = props.children;
   const variants = product.attributes.variants;
   const name: string = product.attributes.name;
   const price = formatPrice(variants);
-  const footer = formatFooter(product);
+  const footer = formatFooter(cart, product);
   return (
     <div class="col">
       <article class="card h-100">
@@ -48,7 +50,7 @@ function formatPrice(variants: Variant[]) {
   }
 }
 
-function formatFooter(product: Product) {
+function formatFooter(cart: Cart, product: Product) {
   const variants = product.attributes.variants;
   let firstPrice = variants[0].attributes.price;
   let allPricesTheSame = variants.every(

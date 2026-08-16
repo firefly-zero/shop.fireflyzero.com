@@ -2,11 +2,12 @@ import { useLocation } from "preact-iso";
 import { Icon } from "./icon";
 import { useAuth } from "./auth";
 import { supabase } from "../supabase";
-import { cart } from "../cart";
+import { useCart } from "../cart";
 
 export function Header() {
   const { url, route } = useLocation();
   const auth = useAuth();
+  const cart = useCart();
 
   const signOut = () => {
     supabase.auth.signOut();

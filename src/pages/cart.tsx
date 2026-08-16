@@ -1,11 +1,13 @@
 import { useLocation } from "preact-iso";
 import { useAuth } from "../components/auth";
 import { Loading } from "../components/loading";
-import { cart } from "../cart";
+import { Icon } from "../components/icon";
+import { useCart } from "../cart";
 
 export function Cart() {
   const { route } = useLocation();
   const auth = useAuth();
+  const cart = useCart();
 
   if (auth.loading) {
     return <Loading />;
@@ -24,6 +26,9 @@ export function Cart() {
             €{variant.attributes.price / 100} x {item.qty} = €
             {(variant.attributes.price * item.qty) / 100}
           </p>
+          <button class="btn btn-danger" onClick={() => cart.remove(item)}>
+            <Icon>trash</Icon> remove
+          </button>
         </div>
       </article>
     );
