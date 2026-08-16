@@ -1,9 +1,10 @@
 import { FunctionComponent, VNode } from "preact";
 import { Icon } from "./icon";
+import { Product, Variant } from "../types";
 
-export const Product: FunctionComponent<{ children: any }> = (props) => {
+export const ProductCard: FunctionComponent<{ children: Product }> = (props) => {
   const item = props.children;
-  const variants: any[] = item.attributes.variants;
+  const variants = item.attributes.variants;
 
   const name: string = item.attributes.name;
   const price = formatPrice(variants);
@@ -35,7 +36,7 @@ export const Product: FunctionComponent<{ children: any }> = (props) => {
   );
 };
 
-function formatPrice(variants: any[]) {
+function formatPrice(variants: Variant[]) {
   let firstPrice = variants[0].attributes.price;
   let allPricesTheSame = variants.every(
     (variant) => variant.attributes.price === firstPrice,
@@ -47,7 +48,7 @@ function formatPrice(variants: any[]) {
   }
 }
 
-function formatFooter(variants: any[]) {
+function formatFooter(variants: Variant[]) {
   let firstPrice = variants[0].attributes.price;
   let allPricesTheSame = variants.every(
     (variant) => variant.attributes.price === firstPrice,
@@ -89,7 +90,7 @@ function formatFooter(variants: any[]) {
     );
   }
 
-  return variants.map((variant: any) => (
+  return variants.map((variant: Variant) => (
     <div class="row justify-content-between align-items-center mb-1">
       <div class="col fs-3">
         <b>{variant.attributes.name}</b>{" "}

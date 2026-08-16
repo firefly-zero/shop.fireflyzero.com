@@ -2,7 +2,8 @@ import { api } from "../api";
 import { Alert } from "../components/alert";
 import { Icon } from "../components/icon";
 import { Loading } from "../components/loading";
-import { Product } from "../components/product";
+import { ProductCard } from "../components/product";
+import { Product } from "../types";
 
 export function Home() {
   const query = api.get("/products");
@@ -12,6 +13,6 @@ export function Home() {
   if (!query.data) {
     return <Loading />;
   }
-  const cards = query.data.map((item: any) => <Product>{item}</Product>);
+  const cards = query.data.map((item: Product) => <ProductCard>{item}</ProductCard>);
   return <section class="row row-cols-1 row-cols-lg-2 g-2">{cards}</section>;
 }
