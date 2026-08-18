@@ -72,7 +72,7 @@ export const api = {
       mutationFn: async (data: PostResource) => {
         const resp = await fetch(BASE_URL + url, {
           method: "POST",
-          body: JSON.stringify(data),
+          body: JSON.stringify({ data: data }),
           headers: await getHeaders(),
         });
         const body = await resp.json();

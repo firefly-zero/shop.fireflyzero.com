@@ -4,17 +4,37 @@ import { Loading } from "../components/loading";
 import { Icon } from "../components/icon";
 import { useCart } from "../cart";
 import { CartItemCard } from "../components/cart-item";
+import { api } from "../api";
+import { Alert } from "../components/alert";
 
 export function Cart() {
-  const { route } = useLocation();
+  const location = useLocation();
   const auth = useAuth();
   const cart = useCart();
 
-  if (auth.loading) {
+  const mut = api.post("/checkout");
+  const checkout = () => {
+    const items = cart
+      .list()
+      .map((item) => ({ id: item.variant.id, quantity: item.qty }));
+    mut.mutate({
+      type: "checkout",
+      attributes: {
+        success_url: `${window.location.origin}/success`,
+        cancel_url: `${window.location.origin}/cancel`,
+        items: items,
+      },
+    });
+  };
+  if (mut.data) {
+    window.location.href = mut.data.attributes.redirect_url;
+  }
+
+  if (auth.loading || mut.isPending) {
     return <Loading />;
   }
   if (!auth.email) {
-    route("/sign-in");
+    location.route("/sign-in");
   }
 
   let total = 0;
@@ -39,6 +59,7 @@ export function Cart() {
           </a>{" "}
           Cart
         </h2>
+        <Alert>{mut.error}</Alert>
         {items.length > 0 ? (
           <>
             {items}
@@ -59,7 +80,7 @@ export function Cart() {
               </a>{" "}
               (Stripe) will be calculated on the next step.
             </p>
-            <button class="btn btn-primary w-100" onClick={() => {}}>
+            <button class="btn btn-primary w-100" onClick={checkout}>
               <Icon>money-bill-wave</Icon> proceed to checkout
             </button>
           </>
