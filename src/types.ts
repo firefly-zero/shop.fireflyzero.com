@@ -1,3 +1,9 @@
+export interface Resource {
+  type: string;
+  id: string;
+  attributes: any;
+}
+
 export interface Variant {
   type: "variant";
   id: string;
