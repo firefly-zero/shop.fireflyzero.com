@@ -1,5 +1,4 @@
-import { createClient, JwtPayload } from "@supabase/supabase-js";
-import { createContext } from "preact";
+import { createClient } from "@supabase/supabase-js";
 
 export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,

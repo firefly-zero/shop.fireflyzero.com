@@ -1,5 +1,6 @@
 import { QueryClient, useMutation, useQuery } from "@tanstack/preact-query";
 import { Resource } from "./types";
+import { supabase } from "./supabase";
 
 export const queryClient = new QueryClient();
 
@@ -27,17 +28,34 @@ function retry(cnt: number, err: ApiError): boolean {
   return false;
 }
 
+async function getToken(): Promise<string | null> {
+  const session = await supabase.auth.getSession();
+  if (session.error) {
+    throw session.error;
+  }
+  return session.data.session?.access_token || null;
+}
+
+async function getHeaders() {
+  const headers: { [key: string]: string } = {
+    Accept: "application/vnd.api+json",
+    "Content-Type": "application/vnd.api+json",
+    "X-Api-Version": "2026-08-15",
+  };
+  const token = await getToken();
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+  return headers;
+}
+
 export const api = {
   get: (url: string) =>
     useQuery<Resource, ApiError>({
       queryKey: ["GET", url],
       queryFn: async () => {
         const resp = await fetch(BASE_URL + url, {
-          headers: {
-            Accept: "application/vnd.api+json",
-            "Content-Type": "application/vnd.api+json",
-            "X-Api-Version": "2026-08-15",
-          },
+          headers: await getHeaders(),
         });
         const body = await resp.json();
         if (body.errors) {
@@ -55,11 +73,7 @@ export const api = {
         const resp = await fetch(BASE_URL + url, {
           method: "POST",
           body: JSON.stringify(data),
-          headers: {
-            Accept: "application/vnd.api+json",
-            "Content-Type": "application/vnd.api+json",
-            "X-Api-Version": "2026-08-15",
-          },
+          headers: await getHeaders(),
         });
         const body = await resp.json();
         if (body.errors) {
@@ -67,6 +81,5 @@ export const api = {
         }
         return body.data;
       },
-      retry: retry,
     }),
 };
