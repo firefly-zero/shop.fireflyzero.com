@@ -51,7 +51,7 @@ async function getHeaders() {
 
 export const api = {
   get: (url: string) =>
-    useQuery<Resource, ApiError>({
+    useQuery<any, ApiError>({
       queryKey: ["GET", url],
       queryFn: async () => {
         const resp = await fetch(BASE_URL + url, {

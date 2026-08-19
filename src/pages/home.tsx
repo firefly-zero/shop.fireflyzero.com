@@ -1,5 +1,6 @@
 import { api } from "../api";
 import { Alert } from "../components/alert";
+import { Icon } from "../components/icon";
 import { Loading } from "../components/loading";
 import { ProductCard } from "../components/product";
 import { Product } from "../types";
@@ -13,5 +14,13 @@ export function Home() {
     return <Loading />;
   }
   const cards = query.data.map((item: Product) => <ProductCard>{item}</ProductCard>);
-  return <section class="row row-cols-1 row-cols-lg-2 g-2">{cards}</section>;
+  return (
+    <>
+      <div class="alert alert-warning" role="alert">
+        <Icon>earth-europe</Icon> We currently only ship within Benelux (Belgium,
+        Netherlands, and Luxembourg). More countries will be added soon. Stay tuned!
+      </div>
+      <section class="row row-cols-1 row-cols-lg-2 g-2">{cards}</section>
+    </>
+  );
 }

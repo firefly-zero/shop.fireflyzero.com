@@ -21,8 +21,9 @@ export function Cart() {
       type: "checkout",
       attributes: {
         success_url: `${window.location.origin}/success/{CHECKOUT_SESSION_ID}`,
-        cancel_url: `${window.location.origin}/`,
+        cancel_url: `${window.location.origin}/cart`,
         items: items,
+        country: "NL",
       },
     });
   };
