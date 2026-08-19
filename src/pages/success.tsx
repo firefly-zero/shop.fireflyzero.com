@@ -1,9 +1,7 @@
-import { useLocation, useRoute } from "preact-iso";
+import { useRoute } from "preact-iso";
 import { api } from "../api";
 import { Alert } from "../components/alert";
 import { Loading } from "../components/loading";
-import { ProductCard } from "../components/product";
-import { Product } from "../types";
 import { useCart } from "../cart";
 
 export function Success() {

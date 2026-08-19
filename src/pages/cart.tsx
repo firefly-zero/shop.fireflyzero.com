@@ -21,7 +21,7 @@ export function Cart() {
       type: "checkout",
       attributes: {
         success_url: `${window.location.origin}/success/{CHECKOUT_SESSION_ID}`,
-        cancel_url: `${window.location.origin}/cancel/{CHECKOUT_SESSION_ID}`,
+        cancel_url: `${window.location.origin}/`,
         items: items,
       },
     });
