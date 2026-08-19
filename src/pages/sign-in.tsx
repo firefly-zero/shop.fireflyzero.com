@@ -53,10 +53,23 @@ export function SignIn() {
     signIn.mutate();
   };
 
+  if (signUp.data) {
+    return (
+      <div class="alert alert-success" role="alert">
+        The confirmation email is sent to {email}. Check your inbox!
+      </div>
+    );
+  }
+
   return (
     <div class="row justify-content-center">
-      <div class="col-md-6" style="border: solid 2px black">
-        <h2>Let's create your account</h2>
+      <div class="col-md-6">
+        <h2>
+          <a href="/" class="btn btn-secondary">
+            <Icon>chevron-left</Icon> back
+          </a>{" "}
+          Let's create your account
+        </h2>
         <Alert>{signIn.error}</Alert>
         <Alert>{signUp.error}</Alert>
         <form class="row g-1" onSubmit={submit}>
