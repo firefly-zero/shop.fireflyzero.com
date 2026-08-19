@@ -1,11 +1,11 @@
-import { useEffect, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 import { supabase } from "../supabase";
 import { useLocation } from "preact-iso";
 import { Alert } from "../components/alert";
 import { Icon } from "../components/icon";
 import { useAuth } from "../components/auth";
 import { Loading } from "../components/loading";
-import { useMutation, useQuery } from "@tanstack/preact-query";
+import { useMutation } from "@tanstack/preact-query";
 
 export function SignIn() {
   const [email, setEmail] = useState("");

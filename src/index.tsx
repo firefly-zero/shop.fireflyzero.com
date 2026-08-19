@@ -10,6 +10,7 @@ import { Cart } from "./pages/cart.js";
 import { QueryClientProvider } from "@tanstack/preact-query";
 import { queryClient } from "./api.js";
 import { Auth } from "./components/auth.js";
+import { Success } from "./pages/success.js";
 
 export function App() {
   return (
@@ -22,6 +23,7 @@ export function App() {
               <Route path="/" component={Home} />
               <Route path="/sign-in" component={SignIn} />
               <Route path="/cart" component={Cart} />
+              <Route path="/success/:id" component={Success} />
               <Route default component={NotFound} />
             </Router>
           </main>

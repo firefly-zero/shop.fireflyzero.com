@@ -20,8 +20,8 @@ export function Cart() {
     mut.mutate({
       type: "checkout",
       attributes: {
-        success_url: `${window.location.origin}/success`,
-        cancel_url: `${window.location.origin}/cancel`,
+        success_url: `${window.location.origin}/success/{CHECKOUT_SESSION_ID}`,
+        cancel_url: `${window.location.origin}/cancel/{CHECKOUT_SESSION_ID}`,
         items: items,
       },
     });
