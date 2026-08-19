@@ -7,6 +7,20 @@ import { CartItemCard } from "../components/cart-item";
 import { api } from "../api";
 import { Alert } from "../components/alert";
 
+function detectCountry(): string {
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  if (tz === "Europe/Amsterdam") {
+    return "NL";
+  }
+  if (tz === "Europe/Brussels") {
+    return "BE";
+  }
+  if (tz === "Europe/Luxembourg") {
+    return "BE";
+  }
+  return "NL";
+}
+
 export function Cart() {
   const location = useLocation();
   const auth = useAuth();
@@ -48,6 +62,7 @@ export function Cart() {
     }
   }
 
+  const country = detectCountry();
   const items = cart
     .list()
     .map((item) => <CartItemCard cart={cart}>{item}</CartItemCard>);
@@ -64,6 +79,20 @@ export function Cart() {
         {items.length > 0 ? (
           <>
             {items}
+            <label for="country-select" class="lead">
+              <Icon>earth-europe</Icon> Shipping country:
+            </label>
+            <select class="form-select" id="country-select">
+              <option value="BE" selected={country === "BE"}>
+                🇧🇪 Belgium (BE)
+              </option>
+              <option value="LU" selected={country === "LU"}>
+                🇱🇺 Luxembourg (LU)
+              </option>
+              <option value="NL" selected={country === "NL"}>
+                🇳🇱 Netherlands (NL)
+              </option>
+            </select>
             <p class="lead" style="margin-bottom: 0px">
               <Icon>money-bills</Icon> Total: <b>€{total / 100}</b>
             </p>
