@@ -18,6 +18,7 @@ export interface Product {
   id: string;
   attributes: {
     name: string;
+    slug: "donation" | string;
     description: string;
     image: string | null;
     variants: Variant[];

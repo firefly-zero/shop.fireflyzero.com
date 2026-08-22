@@ -61,7 +61,7 @@ function formatFooter(cart: Cart, product: Product) {
     (variant) => variant.attributes.price === firstPrice,
   );
 
-  if (firstPrice == 0) {
+  if (product.attributes.slug === "donation") {
     const variant = product.attributes.variants[0];
     return (
       <div class="row justify-content-between">

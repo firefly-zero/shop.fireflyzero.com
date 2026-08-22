@@ -54,11 +54,10 @@ export function Cart() {
 
   let total = 0;
   for (const item of cart.list()) {
-    const attrs = item.variant.attributes;
-    if (attrs.price === 0) {
+    if (item.product.attributes.slug === "donation") {
       total += item.qty * 100;
     } else {
-      total += attrs.price * item.qty;
+      total += item.variant.attributes.price * item.qty;
     }
   }
 

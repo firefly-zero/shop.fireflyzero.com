@@ -14,7 +14,7 @@ export const CartItemCard: FunctionComponent<Props> = (props) => {
   const { product, variant } = item;
 
   let price;
-  if (variant.attributes.price === 0) {
+  if (product.attributes.slug === "donation") {
     price = <>€{item.qty} ❤️</>;
   } else if (item.qty === 1) {
     price = <>€{variant.attributes.price / 100}</>;
