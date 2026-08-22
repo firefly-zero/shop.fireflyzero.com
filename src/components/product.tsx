@@ -15,11 +15,14 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
 
   const product = props.children;
   const name: string = product.attributes.name;
-  const price = formatPrice(product);
+  const price = formatPrice(product, props.products);
   const footer = formatFooter(cart, product);
   const bundle = product.attributes.products.map(({ slug, qty }) =>
     formatBundle(slug, qty, props.products),
   );
+  const bundleSize = product.attributes.products
+    .map(({ qty }) => qty)
+    .reduce((a, b) => a + b, 0);
   return (
     <div class="col col-lg-6">
       <article class="card h-100">
@@ -39,7 +42,12 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
               </span>
             )}
           </h4>
-          <p class="card-text">{product.attributes.description}</p>
+          <p class="card-text mb-1">{product.attributes.description}</p>
+          {bundleSize > 1 && (
+            <p class="card-text mb-1">
+              <b>Items included:</b> {bundleSize}
+            </p>
+          )}
           {bundle.length !== 0 && <p class="card-text">{bundle}</p>}
         </div>
         <div class="card-footer">{footer}</div>
@@ -48,17 +56,37 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
   );
 };
 
-function formatPrice(product: Product) {
+function formatPrice(product: Product, products: Product[]) {
   const variants = product.attributes.variants;
   let firstPrice = variants[0].attributes.price;
   let allPricesTheSame = variants.every(
     (variant) => variant.attributes.price === firstPrice,
   );
-  if (allPricesTheSame && product.attributes.slug !== "donation") {
-    return <>€{firstPrice / 100}</>;
-  } else {
+
+  // Donations and products with different price for each variant
+  // don't show the price.
+  if (!allPricesTheSame || product.attributes.slug === "donation") {
     return <></>;
   }
+
+  // Bundles show the crossed out total price of components.
+  if (product.attributes.products.length > 0) {
+    const prices = product.attributes.products.map(({ slug, qty }) => {
+      const p = products.find((p) => p.attributes.slug === slug);
+      if (!p) {
+        return 0;
+      }
+      return p.attributes.variants[0].attributes.price * qty;
+    });
+    const totalPrice = prices.reduce((a, b) => a + b, 0);
+    return (
+      <>
+        €{firstPrice / 100} <del class="fs-6">€{totalPrice / 100}</del>
+      </>
+    );
+  }
+
+  return <>€{firstPrice / 100}</>;
 }
 
 function formatBundle(slug: string, qty: number, products: Product[]) {
