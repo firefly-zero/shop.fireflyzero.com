@@ -1,20 +1,27 @@
 import { FunctionComponent, VNode } from "preact";
 import { Icon } from "./icon";
-import { CartItem, Product, Variant } from "../types";
+import { Product, Variant } from "../types";
 import { Cart, useCart } from "../cart";
 import { useState } from "preact/hooks";
 import { useLocation } from "preact-iso";
 
-export const ProductCard: FunctionComponent<{ children: Product }> = (props) => {
+type ProductCardProps = {
+  children: Product;
+  products: Product[];
+};
+
+export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
   const cart = useCart();
 
   const product = props.children;
-  const variants = product.attributes.variants;
   const name: string = product.attributes.name;
-  const price = formatPrice(variants);
+  const price = formatPrice(product);
   const footer = formatFooter(cart, product);
+  const bundle = product.attributes.products.map(({ slug, qty }) =>
+    formatBundle(slug, qty, props.products),
+  );
   return (
-    <div class="col">
+    <div class="col col-lg-6">
       <article class="card h-100">
         {product.attributes.image && (
           <img
@@ -33,6 +40,7 @@ export const ProductCard: FunctionComponent<{ children: Product }> = (props) => 
             )}
           </h4>
           <p class="card-text">{product.attributes.description}</p>
+          {bundle.length !== 0 && <p class="card-text">{bundle}</p>}
         </div>
         <div class="card-footer">{footer}</div>
       </article>
@@ -40,15 +48,55 @@ export const ProductCard: FunctionComponent<{ children: Product }> = (props) => 
   );
 };
 
-function formatPrice(variants: Variant[]) {
+function formatPrice(product: Product) {
+  const variants = product.attributes.variants;
   let firstPrice = variants[0].attributes.price;
   let allPricesTheSame = variants.every(
     (variant) => variant.attributes.price === firstPrice,
   );
-  if (allPricesTheSame && firstPrice != 0) {
+  if (allPricesTheSame && product.attributes.slug !== "donation") {
     return <>€{firstPrice / 100}</>;
   } else {
     return <></>;
+  }
+}
+
+function formatBundle(slug: string, qty: number, products: Product[]) {
+  {
+    const subProduct = products.find((p) => p.attributes.slug === slug);
+    if (!subProduct) {
+      return;
+    }
+    const price = subProduct.attributes.variants[0].attributes.price;
+    return (
+      <div class="card mb-1">
+        <div class="row g-0">
+          {subProduct.attributes.image && (
+            <div class="col-md-4">
+              <img
+                src={subProduct.attributes.image}
+                class="img-fluid rounded-start h-100 w-100"
+                style="object-fit: cover; aspect-ratio: 3/2"
+              />
+            </div>
+          )}
+          <div class="col">
+            <div class="card-body">
+              <h5 class="card-title">{subProduct?.attributes.name}</h5>
+              {qty > 1 && (
+                <p class="card-text mb-1">
+                  <b>Quantity:</b> {qty}
+                </p>
+              )}
+              <p class="card-text mb-1">{subProduct.attributes.description}</p>
+              <p class="card-text">
+                <b>Normal price:</b> €{price / 100}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 

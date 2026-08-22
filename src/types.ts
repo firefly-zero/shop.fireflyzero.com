@@ -22,6 +22,7 @@ export interface Product {
     description: string;
     image: string | null;
     variants: Variant[];
+    products: { slug: string; qty: number }[];
   };
 }
 

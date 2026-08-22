@@ -28,9 +28,7 @@ export function Cart() {
 
   const mut = api.post("/checkout");
   const checkout = () => {
-    const items = cart
-      .list()
-      .map((item) => ({ id: item.variant.id, quantity: item.qty }));
+    const items = cart.list().map((item) => ({ id: item.variant.id, qty: item.qty }));
     mut.mutate({
       type: "checkout",
       attributes: {
