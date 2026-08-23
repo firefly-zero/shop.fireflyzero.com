@@ -21,7 +21,7 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
     formatBundle(slug, qty, props.products),
   );
   return (
-    <div class="col col-lg-6">
+    <div class="col col-12 col-lg-6">
       <article class="card h-100">
         {product.attributes.image && (
           <img src={product.attributes.image} class="card-img-top" />
@@ -94,12 +94,14 @@ function formatBundle(slug: string, qty: number, products: Product[]) {
           )}
           <div class="col">
             <div class="card-body">
-              <h5 class="card-title">{subProduct?.attributes.name}</h5>
-              {qty > 1 && (
-                <p class="card-text mb-1">
-                  <b>Quantity:</b> {qty}
-                </p>
-              )}
+              <h5 class="card-title">
+                {subProduct?.attributes.name}
+                {qty > 1 && (
+                  <span class="text-muted" style="float: right">
+                    x{qty} items
+                  </span>
+                )}
+              </h5>
               <p class="card-text mb-1">{subProduct.attributes.description}</p>
               <p class="card-text">
                 <b>Regular price:</b> €{price / 100}
