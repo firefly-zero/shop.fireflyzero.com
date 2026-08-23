@@ -1,3 +1,14 @@
 a.btn {
     margin-right: 4px;
 }
+
+.bundle-item img {
+    object-fit: cover;
+    aspect-ratio: 3/2;
+    border-radius: calc(0.375rem - 2px) 0 0 calc(0.375rem - 2px);
+}
+
+.card-img-top {
+    object-fit: cover;
+    aspect-ratio: 3/2;
+}

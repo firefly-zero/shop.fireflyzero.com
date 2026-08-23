@@ -90,7 +90,7 @@ export function Cart() {
                 🇳🇱 Netherlands (NL)
               </option>
             </select>
-            <p class="lead" style="margin-bottom: 0px">
+            <p class="lead mb-0">
               <Icon>money-bills</Icon> Total: <b>€{total / 100}</b>
             </p>
             <p>

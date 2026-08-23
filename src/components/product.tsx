@@ -20,18 +20,11 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
   const bundle = product.attributes.products.map(({ slug, qty }) =>
     formatBundle(slug, qty, props.products),
   );
-  const bundleSize = product.attributes.products
-    .map(({ qty }) => qty)
-    .reduce((a, b) => a + b, 0);
   return (
     <div class="col col-lg-6">
       <article class="card h-100">
         {product.attributes.image && (
-          <img
-            src={product.attributes.image}
-            class="card-img-top"
-            style="object-fit: cover; aspect-ratio: 3/2"
-          />
+          <img src={product.attributes.image} class="card-img-top" />
         )}
         <div class="card-body">
           <h4 class="card-title">
@@ -43,11 +36,6 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
             )}
           </h4>
           <p class="card-text mb-1">{product.attributes.description}</p>
-          {bundleSize > 1 && (
-            <p class="card-text mb-1">
-              <b>Items included:</b> {bundleSize}
-            </p>
-          )}
           {bundle.length !== 0 && <p class="card-text">{bundle}</p>}
         </div>
         <div class="card-footer">{footer}</div>
@@ -97,15 +85,11 @@ function formatBundle(slug: string, qty: number, products: Product[]) {
     }
     const price = subProduct.attributes.variants[0].attributes.price;
     return (
-      <div class="card mb-1">
+      <div class="card mb-1 bundle-item">
         <div class="row g-0">
           {subProduct.attributes.image && (
             <div class="col-md-4">
-              <img
-                src={subProduct.attributes.image}
-                class="img-fluid rounded-start h-100 w-100"
-                style="object-fit: cover; aspect-ratio: 3/2"
-              />
+              <img src={subProduct.attributes.image} class="img-fluid h-100 w-100" />
             </div>
           )}
           <div class="col">
@@ -118,7 +102,7 @@ function formatBundle(slug: string, qty: number, products: Product[]) {
               )}
               <p class="card-text mb-1">{subProduct.attributes.description}</p>
               <p class="card-text">
-                <b>Normal price:</b> €{price / 100}
+                <b>Regular price:</b> €{price / 100}
               </p>
             </div>
           </div>
@@ -165,8 +149,20 @@ function formatFooter(cart: Cart, product: Product) {
 
   if (variants.length == 1) {
     const variant = product.attributes.variants[0];
+    const bundleSize = product.attributes.products
+      .map(({ qty }) => qty)
+      .reduce((a, b) => a + b, 0);
     return (
-      <div class="col">{formatButton(() => cart.add({ product, variant, qty: 1 }))}</div>
+      <div class="row align-items-center">
+        {bundleSize > 1 && (
+          <div class="col">
+            <b>Items included:</b> {bundleSize}
+          </div>
+        )}
+        <div class="col">
+          {formatButton(() => cart.add({ product, variant, qty: 1 }))}
+        </div>
+      </div>
     );
   }
 
