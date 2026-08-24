@@ -66,6 +66,24 @@ export const api = {
       retry: retry,
     }),
 
+  query: (url: string, data: PostResource) =>
+    useQuery<any, ApiError>({
+      queryKey: ["POST", url],
+      queryFn: async () => {
+        const resp = await fetch(BASE_URL + url, {
+          method: "POST",
+          body: JSON.stringify({ data: data }),
+          headers: await getHeaders(),
+        });
+        const body = await resp.json();
+        if (body.errors) {
+          throw body;
+        }
+        return body.data;
+      },
+      retry: retry,
+    }),
+
   post: (url: string) =>
     useMutation<Resource, ApiError, PostResource>({
       mutationKey: ["POST", url],

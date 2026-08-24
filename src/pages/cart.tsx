@@ -6,6 +6,7 @@ import { useCart } from "../cart";
 import { CartItemCard } from "../components/cart-item";
 import { api } from "../api";
 import { Alert } from "../components/alert";
+import { useState } from "preact/hooks";
 
 function detectCountry(): string {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -25,10 +26,11 @@ export function Cart() {
   const location = useLocation();
   const auth = useAuth();
   const cart = useCart();
+  const [promo, setPromo] = useState("");
 
+  const items = cart.list().map((item) => ({ id: item.variant.id, qty: item.qty }));
   const mut = api.post("/checkout");
   const checkout = () => {
-    const items = cart.list().map((item) => ({ id: item.variant.id, qty: item.qty }));
     mut.mutate({
       type: "checkout",
       attributes: {
@@ -36,14 +38,22 @@ export function Cart() {
         cancel_url: `${window.location.origin}/cart`,
         items: items,
         country: "NL",
+        promotion: promo || null,
       },
     });
   };
+
+  const country = detectCountry();
+  const shipping = api.query("/shipping", {
+    type: "shipping",
+    attributes: { country, items },
+  });
+
   if (mut.data) {
     window.location.href = mut.data.attributes.redirect_url;
   }
 
-  if (auth.loading || mut.isPending) {
+  if (auth.loading) {
     return <Loading />;
   }
   if (!auth.email) {
@@ -59,10 +69,10 @@ export function Cart() {
     }
   }
 
-  const country = detectCountry();
-  const items = cart
+  const itemCards = cart
     .list()
     .map((item) => <CartItemCard cart={cart}>{item}</CartItemCard>);
+
   return (
     <div class="row justify-content-center">
       <div class="col-md-6">
@@ -72,10 +82,21 @@ export function Cart() {
           </a>{" "}
           Cart
         </h2>
-        <Alert>{mut.error}</Alert>
-        {items.length > 0 ? (
+        {itemCards.length > 0 ? (
           <>
-            {items}
+            {itemCards}
+            <div>
+              <label for="promo-input" class="lead">
+                <Icon>gift</Icon> Promotion code:
+              </label>
+              <input
+                type="text"
+                autoComplete="off"
+                class="form-control"
+                onInput={(e) => setPromo(e.currentTarget.value)}
+              />
+            </div>
+
             <label for="country-select" class="lead">
               <Icon>earth-europe</Icon> Shipping country:
             </label>
@@ -90,24 +111,33 @@ export function Cart() {
                 🇳🇱 Netherlands (NL)
               </option>
             </select>
+            {shipping.data && (
+              <p class="lead mb-0">
+                <Icon>truck-fast</Icon> Shipping:{" "}
+                <b>+€{shipping.data.attributes.cost / 100}</b>{" "}
+                <span class="text-muted">({shipping.data.attributes.name})</span>
+              </p>
+            )}
             <p class="lead mb-0">
-              <Icon>money-bills</Icon> Total: <b>€{total / 100}</b>
+              <Icon>money-bills</Icon> Total:{" "}
+              <b>€{total / 100 + (shipping.data?.attributes.cost || 0)}</b>
             </p>
             <p>
-              Taxes already included in the cost. Shipping costs,{" "}
+              Taxes and shipping are already included in the cost. The{" "}
               <a
                 href="https://support.stripe.com/questions/understanding-your-currency-conversion-fees"
                 target="_blank"
               >
                 currency exchange comission
               </a>{" "}
-              (if paying not in euros), and{" "}
-              <a href="https://stripe.com/en-nl/pricing" target="_blank">
-                payment processor comission
-              </a>{" "}
-              (Stripe) will be calculated on the next step.
+              (if paying not in euros) will be calculated on the next step.
             </p>
-            <button class="btn btn-primary w-100" onClick={checkout}>
+            <Alert>{mut.error}</Alert>
+            <button
+              class="btn btn-primary w-100"
+              onClick={checkout}
+              disabled={mut.isPending}
+            >
               <Icon>money-bill-wave</Icon> proceed to checkout
             </button>
           </>
