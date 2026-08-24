@@ -85,6 +85,35 @@ export function Cart() {
         {itemCards.length > 0 ? (
           <>
             {itemCards}
+
+            {shipping.data && (
+              <article class="card mb-1">
+                <div class="card-body">
+                  <h4 class="card-title">
+                    {shipping.data.attributes.name}
+                    <span class="text-muted" style="display: inline-block; float: right">
+                      €{shipping.data.attributes.cost / 100}
+                    </span>
+                  </h4>
+
+                  <label for="country-select" class="lead">
+                    <Icon>earth-europe</Icon> Shipping country:
+                  </label>
+                  <select class="form-select" id="country-select">
+                    <option value="BE" selected={country === "BE"}>
+                      🇧🇪 Belgium (BE)
+                    </option>
+                    <option value="LU" selected={country === "LU"}>
+                      🇱🇺 Luxembourg (LU)
+                    </option>
+                    <option value="NL" selected={country === "NL"}>
+                      🇳🇱 Netherlands (NL)
+                    </option>
+                  </select>
+                </div>
+              </article>
+            )}
+
             <div>
               <label for="promo-input" class="lead">
                 <Icon>gift</Icon> Promotion code:
@@ -97,30 +126,9 @@ export function Cart() {
               />
             </div>
 
-            <label for="country-select" class="lead">
-              <Icon>earth-europe</Icon> Shipping country:
-            </label>
-            <select class="form-select" id="country-select">
-              <option value="BE" selected={country === "BE"}>
-                🇧🇪 Belgium (BE)
-              </option>
-              <option value="LU" selected={country === "LU"}>
-                🇱🇺 Luxembourg (LU)
-              </option>
-              <option value="NL" selected={country === "NL"}>
-                🇳🇱 Netherlands (NL)
-              </option>
-            </select>
-            {shipping.data && (
-              <p class="lead mb-0">
-                <Icon>truck-fast</Icon> Shipping:{" "}
-                <b>+€{shipping.data.attributes.cost / 100}</b>{" "}
-                <span class="text-muted">({shipping.data.attributes.name})</span>
-              </p>
-            )}
             <p class="lead mb-0">
               <Icon>money-bills</Icon> Total:{" "}
-              <b>€{total / 100 + (shipping.data?.attributes.cost || 0)}</b>
+              <b>€{(total + (shipping.data?.attributes.cost || 0)) / 100}</b>
             </p>
             <p>
               Taxes and shipping are already included in the cost. The{" "}
