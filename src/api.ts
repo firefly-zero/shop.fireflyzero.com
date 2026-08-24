@@ -68,7 +68,7 @@ export const api = {
 
   query: (url: string, data: PostResource) =>
     useQuery<any, ApiError>({
-      queryKey: ["POST", url],
+      queryKey: ["POST", url, data],
       queryFn: async () => {
         const resp = await fetch(BASE_URL + url, {
           method: "POST",

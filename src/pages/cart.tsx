@@ -27,6 +27,7 @@ export function Cart() {
   const auth = useAuth();
   const cart = useCart();
   const [promo, setPromo] = useState("");
+  const [country, setCountry] = useState(detectCountry());
 
   const items = cart.list().map((item) => ({ id: item.variant.id, qty: item.qty }));
   const mut = api.post("/checkout");
@@ -43,7 +44,6 @@ export function Cart() {
     });
   };
 
-  const country = detectCountry();
   const shipping = api.query("/shipping", {
     type: "shipping",
     attributes: { country, items },
@@ -99,7 +99,13 @@ export function Cart() {
                   <label for="country-select" class="lead">
                     <Icon>earth-europe</Icon> Shipping country:
                   </label>
-                  <select class="form-select" id="country-select">
+                  <select
+                    class="form-select"
+                    id="country-select"
+                    onChange={(e) => {
+                      setCountry(e.currentTarget.value);
+                    }}
+                  >
                     <option value="BE" selected={country === "BE"}>
                       🇧🇪 Belgium (BE)
                     </option>
