@@ -17,7 +17,11 @@ export function Header() {
   let cartSuffix = <></>;
   const cartSize = cart.list().length;
   if (cartSize > 0) {
-    cartSuffix = <span class="text-muted">({cartSize})</span>;
+    cartSuffix = (
+      <span class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-secondary">
+        {cartSize}
+      </span>
+    );
   }
 
   return (
