@@ -3,9 +3,10 @@ import { CartItem } from "./types";
 
 export interface Cart {
   size: number;
-  add(_: CartItem): void;
+  add(item: CartItem): void;
   list(): CartItem[];
   remove(item: CartItem): void;
+  get(item: CartItem): CartItem | null;
   clear(): void;
 }
 
@@ -68,6 +69,22 @@ export function useCart(): Cart {
         }
       });
       localStorage.setItem("cart", JSON.stringify(newItems));
+    },
+
+    get: (item: CartItem): CartItem | null => {
+      const rawCart = localStorage.getItem("cart");
+      if (!rawCart) {
+        return null;
+      }
+      const items: CartItem[] = JSON.parse(rawCart);
+      for (const other of items) {
+        const sameProduct = other.product.id === item.product.id;
+        const sameVariant = other.variant.id === item.variant.id;
+        if (sameProduct && sameVariant) {
+          return other;
+        }
+      }
+      return null;
     },
 
     clear: (): void => {

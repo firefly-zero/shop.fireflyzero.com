@@ -143,7 +143,7 @@ function formatFooter(cart: Cart, product: Product) {
           </div>
         </div>
         <div class="col">
-          <div class="col">{formatButton(() => cart.add({ product, variant, qty }))}</div>
+          <div class="col">{formatButton(cart, product, variant, qty)}</div>
         </div>
       </div>
     );
@@ -161,9 +161,7 @@ function formatFooter(cart: Cart, product: Product) {
             <b>Items included:</b> {bundleSize}
           </div>
         )}
-        <div class="col">
-          {formatButton(() => cart.add({ product, variant, qty: 1 }))}
-        </div>
+        <div class="col">{formatButton(cart, product, variant, 1)}</div>
       </div>
     );
   }
@@ -174,33 +172,40 @@ function formatFooter(cart: Cart, product: Product) {
         <b>{variant.attributes.name}</b>{" "}
         {!allPricesTheSame && "€" + variant.attributes.price / 100}
       </div>
-      <div class="col">{formatButton(() => cart.add({ product, variant, qty: 1 }))}</div>
+      <div class="col">{formatButton(cart, product, variant, 1)}</div>
     </div>
   ));
 }
 
-function formatButton(onClick: () => void) {
-  const [added, setAdded] = useState(false);
+function formatButton(cart: Cart, product: Product, variant: Variant, qty: number) {
   const { route } = useLocation();
 
-  if (added) {
+  const item = { product, variant, qty };
+  const itemInCart = cart.get(item);
+  const count = itemInCart?.qty || 0;
+
+  if (count > 0) {
     return (
-      <button
-        class="btn btn-secondary"
-        style="display: block; float: right"
-        onClick={() => route("/cart")}
-      >
-        <Icon>cart-shopping</Icon> go to cart
-      </button>
+      <div class="btn-group" role="group" style="display: block; float: right">
+        <button class="btn btn-secondary" onClick={() => cart.remove(item)}>
+          <Icon>trash</Icon>
+        </button>
+        <button class="btn btn-secondary" onClick={() => route("/cart")}>
+          {count} in cart
+        </button>
+        <button class="btn btn-secondary" onClick={() => cart.add(item)}>
+          <Icon>plus</Icon>
+        </button>
+      </div>
     );
   }
 
-  const add = () => {
-    onClick();
-    setAdded(true);
-  };
   return (
-    <button class="btn btn-primary" style="display: block; float: right" onClick={add}>
+    <button
+      class="btn btn-primary"
+      style="display: block; float: right"
+      onClick={() => cart.add(item)}
+    >
       <Icon>cart-plus</Icon> add to cart
     </button>
   );
