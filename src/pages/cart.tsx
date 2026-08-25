@@ -86,39 +86,46 @@ export function Cart() {
           <>
             {itemCards}
 
-            {shipping.data && (
-              <article class="card mb-1">
-                <div class="card-body">
-                  <h4 class="card-title">
-                    {shipping.data.attributes.name}
-                    <span class="text-muted" style="display: inline-block; float: right">
-                      €{shipping.data.attributes.cost / 100}
-                    </span>
-                  </h4>
+            <article class="card mb-1">
+              <div class="card-body">
+                <h4 class="card-title">
+                  {shipping.data ? (
+                    <>
+                      {shipping.data?.attributes.name}
+                      <span
+                        class="text-muted"
+                        style="display: inline-block; float: right"
+                      >
+                        €{shipping.data.attributes.cost / 100}
+                      </span>
+                    </>
+                  ) : (
+                    "Shipping"
+                  )}
+                </h4>
 
-                  <label for="country-select" class="lead">
-                    <Icon>earth-europe</Icon> Shipping country:
-                  </label>
-                  <select
-                    class="form-select"
-                    id="country-select"
-                    onChange={(e) => {
-                      setCountry(e.currentTarget.value);
-                    }}
-                  >
-                    <option value="BE" selected={country === "BE"}>
-                      🇧🇪 Belgium (BE)
-                    </option>
-                    <option value="LU" selected={country === "LU"}>
-                      🇱🇺 Luxembourg (LU)
-                    </option>
-                    <option value="NL" selected={country === "NL"}>
-                      🇳🇱 Netherlands (NL)
-                    </option>
-                  </select>
-                </div>
-              </article>
-            )}
+                <label for="country-select" class="lead">
+                  <Icon>earth-europe</Icon> Shipping country:
+                </label>
+                <select
+                  class="form-select"
+                  id="country-select"
+                  onChange={(e) => {
+                    setCountry(e.currentTarget.value);
+                  }}
+                >
+                  <option value="BE" selected={country === "BE"}>
+                    🇧🇪 Belgium (BE)
+                  </option>
+                  <option value="LU" selected={country === "LU"}>
+                    🇱🇺 Luxembourg (LU)
+                  </option>
+                  <option value="NL" selected={country === "NL"}>
+                    🇳🇱 Netherlands (NL)
+                  </option>
+                </select>
+              </div>
+            </article>
 
             <div>
               <label for="promo-input" class="lead">
