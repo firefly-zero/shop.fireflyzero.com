@@ -187,9 +187,22 @@ function formatButton(cart: Cart, product: Product, variant: Variant, qty: numbe
   if (count > 0) {
     return (
       <div class="btn-group" role="group" style="display: block; float: right">
-        <button class="btn btn-secondary" onClick={() => cart.remove(item)}>
-          <Icon>trash</Icon>
-        </button>
+        {count <= 1 ? (
+          <button class="btn btn-secondary" onClick={() => cart.remove(item)}>
+            <Icon>trash</Icon>
+          </button>
+        ) : (
+          <button
+            class="btn btn-secondary"
+            onClick={() => {
+              cart.remove(item);
+              item.qty = count - 1;
+              cart.add(item);
+            }}
+          >
+            <Icon>minus</Icon>
+          </button>
+        )}
         <button class="btn btn-secondary" onClick={() => route("/cart")}>
           {count} in cart
         </button>
