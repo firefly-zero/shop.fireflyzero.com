@@ -21,7 +21,7 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
   const bundle = product.attributes.products.map(({ slug, qty }) => {
     const subProduct = props.products.find((p) => p.attributes.slug === slug);
     if (subProduct) {
-      return <BundleItem qty={qty}>{subProduct}</BundleItem>;
+      return <BundleItem qty={qty} product={subProduct} />;
     }
   });
   return (
