@@ -37,7 +37,9 @@ export function Success() {
   return (
     <div>
       {alert}
-      <OrderCard>{order.data}</OrderCard>
+      <div class="row justify-content-center">
+        <OrderCard>{order.data}</OrderCard>
+      </div>
     </div>
   );
 }

@@ -34,6 +34,7 @@ export interface Order {
     amount: number;
     currency: string;
     created_at: string;
+    items: any[];
   };
 }
 
