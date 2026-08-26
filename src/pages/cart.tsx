@@ -7,6 +7,7 @@ import { CartItemCard } from "../components/cart-item";
 import { api } from "../api";
 import { Alert } from "../components/alert";
 import { useState } from "preact/hooks";
+import { Product } from "../types";
 
 function detectCountry(): string {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -48,6 +49,12 @@ export function Cart() {
     type: "shipping",
     attributes: { country, items },
   });
+
+  // Refresh product info in the cart.
+  const products = api.get("/products");
+  if (products.data) {
+    cart.updateProducts(products.data);
+  }
 
   if (mut.data) {
     window.location.href = mut.data.attributes.redirect_url;

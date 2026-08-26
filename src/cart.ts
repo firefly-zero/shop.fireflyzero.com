@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { CartItem } from "./types";
+import { CartItem, Product } from "./types";
 
 export interface Cart {
   size: number;
@@ -7,15 +7,33 @@ export interface Cart {
   list(): CartItem[];
   remove(item: CartItem): void;
   get(item: CartItem): CartItem | null;
+  updateProducts(products: Product[]): void;
   clear(): void;
+}
+
+function same(a: CartItem, b: CartItem): boolean {
+  return a.product.id === b.product.id && a.variant.id === b.variant.id;
+}
+
+function saveCart(items: CartItem[]) {
+  localStorage.setItem("cart", JSON.stringify(items));
 }
 
 export function useCart(): Cart {
   const [count, setCount] = useState(0);
 
   return {
+    /** The total number of individual units in the cart.
+     *
+     * We track it so that carts can be compared with equality
+     * to see if there are any changes in the cart items.
+     */
     size: count,
 
+    /** Add a new item into the cart.
+     *
+     * If the item is already in the cart, the quantity will be increased.
+     */
     add: (item: CartItem): void => {
       const rawCart = localStorage.getItem("cart");
       let cart: CartItem[];
@@ -26,9 +44,7 @@ export function useCart(): Cart {
       }
       let found = false;
       for (const other of cart) {
-        const sameProduct = other.product.id === item.product.id;
-        const sameVariant = other.variant.id === item.variant.id;
-        if (sameProduct && sameVariant) {
+        if (same(item, other)) {
           found = true;
           other.qty += item.qty;
           break;
@@ -37,10 +53,11 @@ export function useCart(): Cart {
       if (!found) {
         cart.push(item);
       }
-      localStorage.setItem("cart", JSON.stringify(cart));
+      saveCart(cart);
       setCount(count + item.qty);
     },
 
+    /** Get the list of all items in the cart. */
     list: (): CartItem[] => {
       const rawCart = localStorage.getItem("cart");
       if (rawCart) {
@@ -50,6 +67,10 @@ export function useCart(): Cart {
       }
     },
 
+    /** Remove the given item from the cart.
+     *
+     * The qty is ignored.
+     */
     remove: (item: CartItem): void => {
       const rawCart = localStorage.getItem("cart");
       if (!rawCart) {
@@ -59,18 +80,20 @@ export function useCart(): Cart {
 
       const newItems: CartItem[] = [];
       oldItems.map((other) => {
-        const sameProduct = other.product.id === item.product.id;
-        const sameVariant = other.variant.id === item.variant.id;
-        const keep = !sameProduct || !sameVariant;
-        if (keep) {
-          newItems.push(other);
-        } else {
+        if (same(item, other)) {
           setCount(count - other.qty);
+        } else {
+          newItems.push(other);
         }
       });
-      localStorage.setItem("cart", JSON.stringify(newItems));
+      saveCart(newItems);
     },
 
+    /** Get the given item from the cart.
+     *
+     * Can be used to check if the item is in the cart
+     * and to retrieve the item qty.
+     */
     get: (item: CartItem): CartItem | null => {
       const rawCart = localStorage.getItem("cart");
       if (!rawCart) {
@@ -78,15 +101,32 @@ export function useCart(): Cart {
       }
       const items: CartItem[] = JSON.parse(rawCart);
       for (const other of items) {
-        const sameProduct = other.product.id === item.product.id;
-        const sameVariant = other.variant.id === item.variant.id;
-        if (sameProduct && sameVariant) {
+        if (same(item, other)) {
           return other;
         }
       }
       return null;
     },
 
+    /** Update product infos for all items in the cart. */
+    updateProducts: (products: Product[]): void => {
+      const rawCart = localStorage.getItem("cart");
+      if (!rawCart) {
+        return;
+      }
+      const items: CartItem[] = JSON.parse(rawCart);
+      for (const item of items) {
+        let product: Product;
+        for (product of products) {
+          if (product.id == item.product.id) {
+            item.product = product;
+            break;
+          }
+        }
+      }
+    },
+
+    /** Remove all items from the cart. */
     clear: (): void => {
       localStorage.removeItem("cart");
       setCount(0);
