@@ -141,17 +141,18 @@ export function Cart() {
 
             <p class="lead mb-0">
               <Icon>money-bills</Icon> Total:{" "}
-              <b>€{(total + (shipping.data?.attributes.cost || 0)) / 100}</b>
+              <b>€{(total + (shipping.data?.attributes.cost || 0)) / 100}</b>{" "}
+              <span class="text-muted fs-6">(VAT included)</span>
             </p>
             <p>
-              Taxes and shipping are already included in the cost. The{" "}
+              if paying not in euros, the{" "}
               <a
                 href="https://support.stripe.com/questions/understanding-your-currency-conversion-fees"
                 target="_blank"
               >
                 currency exchange comission
               </a>{" "}
-              (if paying not in euros) will be calculated on the next step.
+              will be calculated on the next step.
             </p>
             <Alert>{mut.error}</Alert>
             <button

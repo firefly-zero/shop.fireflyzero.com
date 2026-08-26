@@ -40,8 +40,8 @@ export const CartItemCard: FunctionComponent<Props> = (props) => {
           </span>
         </h4>
 
-        <button class="btn btn-danger m-1" onClick={() => cart.remove(item)}>
-          <Icon>trash</Icon> remove
+        <button class="btn m-1" onClick={() => cart.remove(item)}>
+          <Icon>trash</Icon>
         </button>
 
         {item.qty > 1 && (
