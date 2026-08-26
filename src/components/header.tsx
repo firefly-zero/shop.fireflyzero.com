@@ -31,7 +31,7 @@ export const Header: FunctionComponent<Props> = (props) => {
 
   return (
     <header class="row justify-content-between align-items-end mb-2">
-      <h1 class="col">
+      <h1 class="col-12 col-md-8">
         <a href="https://fireflyzero.com/" target="_blank">
           Firefly Zero
         </a>
