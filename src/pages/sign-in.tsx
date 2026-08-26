@@ -6,6 +6,7 @@ import { Icon } from "../components/icon";
 import { useAuth } from "../components/auth";
 import { Loading } from "../components/loading";
 import { useMutation } from "@tanstack/preact-query";
+import { Header } from "../components/header";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
@@ -63,13 +64,8 @@ export function SignIn() {
 
   return (
     <div class="row justify-content-center">
+      <Header>Sign in</Header>
       <div class="col-md-6">
-        <h2>
-          <a href="/" class="btn btn-secondary">
-            <Icon>chevron-left</Icon> back
-          </a>{" "}
-          Let's create your account
-        </h2>
         <Alert>{signIn.error}</Alert>
         <Alert>{signUp.error}</Alert>
         <form class="row g-1" onSubmit={submit}>

@@ -3,8 +3,8 @@ import { api } from "../api";
 import { Alert } from "../components/alert";
 import { Loading } from "../components/loading";
 import { useCart } from "../cart";
-import { Icon } from "../components/icon";
 import { OrderCard } from "../components/order";
+import { Header } from "../components/header";
 
 export function Success() {
   const route = useRoute();
@@ -36,6 +36,7 @@ export function Success() {
   }
   return (
     <div>
+      <Header>Order</Header>
       {alert}
       <div class="row justify-content-center">
         <OrderCard>{order.data}</OrderCard>

@@ -1,6 +1,4 @@
 import { LocationProvider, Router, Route, hydrate, prerender as ssr } from "preact-iso";
-
-import { Header } from "./components/header.js";
 import { Home } from "./pages/home.js";
 import { SignIn } from "./pages/sign-in.js";
 import { NotFound } from "./pages/_404.jsx";
@@ -17,7 +15,6 @@ export function App() {
     <LocationProvider>
       <QueryClientProvider client={queryClient}>
         <Auth>
-          <Header />
           <main>
             <Router>
               <Route path="/" component={Home} />

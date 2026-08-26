@@ -8,6 +8,7 @@ import { api } from "../api";
 import { Alert } from "../components/alert";
 import { useState } from "preact/hooks";
 import { Product } from "../types";
+import { Header } from "../components/header";
 
 function detectCountry(): string {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -82,13 +83,8 @@ export function Cart() {
 
   return (
     <div class="row justify-content-center">
+      <Header>Cart</Header>
       <div class="col-md-6">
-        <h2>
-          <a href="/" class="btn btn-secondary">
-            <Icon>chevron-left</Icon> back
-          </a>{" "}
-          Cart
-        </h2>
         {itemCards.length > 0 ? (
           <>
             {itemCards}

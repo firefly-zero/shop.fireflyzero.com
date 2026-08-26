@@ -3,8 +3,13 @@ import { Icon } from "./icon";
 import { useAuth } from "./auth";
 import { supabase } from "../supabase";
 import { useCart } from "../cart";
+import { FunctionComponent } from "preact";
 
-export function Header() {
+interface Props {
+  children?: string;
+}
+
+export const Header: FunctionComponent<Props> = (props) => {
   const { url, route } = useLocation();
   const auth = useAuth();
   const cart = useCart();
@@ -29,8 +34,10 @@ export function Header() {
       <h1 class="col">
         <a href="https://fireflyzero.com/" target="_blank">
           Firefly Zero
-        </a>{" "}
-        shop
+        </a>
+        {" / "}
+        {url === "/" ? "Shop" : <a href="/">Shop</a>}
+        {props.children && " / " + props.children}
       </h1>
       <nav class="col text-end lead">
         {auth.email ? (
@@ -59,4 +66,4 @@ export function Header() {
       </nav>
     </header>
   );
-}
+};

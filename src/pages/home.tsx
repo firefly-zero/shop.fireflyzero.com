@@ -1,5 +1,6 @@
 import { api } from "../api";
 import { Alert } from "../components/alert";
+import { Header } from "../components/header";
 import { Icon } from "../components/icon";
 import { Loading } from "../components/loading";
 import { ProductCard } from "../components/product";
@@ -18,6 +19,7 @@ export function Home() {
   ));
   return (
     <>
+      <Header></Header>
       <div class="alert alert-warning" role="alert">
         <Icon>earth-europe</Icon> We currently only ship within Benelux (Belgium,
         Netherlands, and Luxembourg). More countries will be added soon. Stay tuned!
