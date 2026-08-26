@@ -1,5 +1,6 @@
 import { api } from "../api";
 import { Alert } from "../components/alert";
+import { Container } from "../components/container";
 import { Header } from "../components/header";
 import { Icon } from "../components/icon";
 import { Loading } from "../components/loading";
@@ -9,10 +10,20 @@ import { Product } from "../types";
 export function Home() {
   const query = api.get("/products");
   if (query.error) {
-    return <Alert>{query.error}</Alert>;
+    return (
+      <>
+        <Header></Header>
+        <Alert>{query.error}</Alert>
+      </>
+    );
   }
   if (!query.data) {
-    return <Loading />;
+    return (
+      <>
+        <Header></Header>
+        <Loading />
+      </>
+    );
   }
   const cards = query.data.map((item: Product) => (
     <ProductCard products={query.data}>{item}</ProductCard>

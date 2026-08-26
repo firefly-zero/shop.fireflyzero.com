@@ -5,6 +5,7 @@ import { Loading } from "../components/loading";
 import { useCart } from "../cart";
 import { OrderCard } from "../components/order";
 import { Header } from "../components/header";
+import { Container } from "../components/container";
 
 export function Success() {
   const route = useRoute();
@@ -13,10 +14,18 @@ export function Success() {
   const cart = useCart();
 
   if (order.isLoading) {
-    return <Loading />;
+    return (
+      <Container title="Order">
+        <Loading />
+      </Container>
+    );
   }
   if (order.error) {
-    return <Alert>{order.error}</Alert>;
+    return (
+      <Container title="Order">
+        <Alert>{order.error}</Alert>
+      </Container>
+    );
   }
 
   let alert;
@@ -35,12 +44,9 @@ export function Success() {
     );
   }
   return (
-    <div>
-      <Header>Order</Header>
+    <Container title="Order">
       {alert}
-      <div class="row justify-content-center">
-        <OrderCard>{order.data}</OrderCard>
-      </div>
-    </div>
+      <OrderCard>{order.data}</OrderCard>
+    </Container>
   );
 }

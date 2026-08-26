@@ -7,6 +7,7 @@ import { useAuth } from "../components/auth";
 import { Loading } from "../components/loading";
 import { useMutation } from "@tanstack/preact-query";
 import { Header } from "../components/header";
+import { Container } from "../components/container";
 
 export function SignIn() {
   const [email, setEmail] = useState("");
@@ -37,7 +38,11 @@ export function SignIn() {
   });
 
   if (auth.loading) {
-    return <Loading />;
+    return (
+      <Container title="Sign in">
+        <Loading />
+      </Container>
+    );
   }
   if (auth.email) {
     route("/cart");
@@ -63,63 +68,60 @@ export function SignIn() {
   }
 
   return (
-    <div class="row justify-content-center">
-      <Header>Sign in</Header>
-      <div class="col-md-6">
-        <Alert>{signIn.error}</Alert>
-        <Alert>{signUp.error}</Alert>
-        <form class="row g-1" onSubmit={submit}>
-          <label for="email-input" class="col-sm-2 col-form-label">
-            email
-          </label>
-          <div class="col-sm-10">
-            <input
-              type="email"
-              id="email-input"
-              class="form-control"
-              onInput={(e) => setEmail(e.currentTarget.value)}
-              required
-              minLength={6}
-              maxLength={128}
-              pattern=".+@.+\..+"
-            />
-          </div>
+    <Container title="Sign in">
+      <Alert>{signIn.error}</Alert>
+      <Alert>{signUp.error}</Alert>
+      <form class="row g-1" onSubmit={submit}>
+        <label for="email-input" class="col-sm-2 col-form-label">
+          email
+        </label>
+        <div class="col-sm-10">
+          <input
+            type="email"
+            id="email-input"
+            class="form-control"
+            onInput={(e) => setEmail(e.currentTarget.value)}
+            required
+            minLength={6}
+            maxLength={128}
+            pattern=".+@.+\..+"
+          />
+        </div>
 
-          <label for="password-input" class="col-sm-2 col-form-label">
-            password
-          </label>
-          <div class="col-sm-10 mb-1">
-            <input
-              type="password"
-              id="password-input"
-              class="form-control"
-              onInput={(e) => setPassword(e.currentTarget.value)}
-              required
-              minLength={8}
-              maxLength={128}
-            />
-          </div>
+        <label for="password-input" class="col-sm-2 col-form-label">
+          password
+        </label>
+        <div class="col-sm-10 mb-1">
+          <input
+            type="password"
+            id="password-input"
+            class="form-control"
+            onInput={(e) => setPassword(e.currentTarget.value)}
+            required
+            minLength={8}
+            maxLength={128}
+          />
+        </div>
 
-          <div class="col-sm-6">
-            <button
-              type="button"
-              class="btn btn-primary w-100"
-              disabled={!buttonsActive}
-              onClick={() => signUp.mutate()}
-            >
-              <Icon>person-circle-plus</Icon> sign up
-            </button>
-          </div>
-          <div class="col-sm-6">
-            <button type="submit" class="btn btn-primary w-100" disabled={!buttonsActive}>
-              <Icon>right-to-bracket</Icon> sign in
-            </button>
-          </div>
-          <p class="text-center">
-            <a href="#">reset password</a>
-          </p>
-        </form>
-      </div>
-    </div>
+        <div class="col-sm-6">
+          <button
+            type="button"
+            class="btn btn-primary w-100"
+            disabled={!buttonsActive}
+            onClick={() => signUp.mutate()}
+          >
+            <Icon>person-circle-plus</Icon> sign up
+          </button>
+        </div>
+        <div class="col-sm-6">
+          <button type="submit" class="btn btn-primary w-100" disabled={!buttonsActive}>
+            <Icon>right-to-bracket</Icon> sign in
+          </button>
+        </div>
+        <p class="text-center">
+          <a href="#">reset password</a>
+        </p>
+      </form>
+    </Container>
   );
 }

@@ -11,7 +11,7 @@ export const OrderCard: FunctionComponent<Props> = (props) => {
   const attrs = order.attributes;
 
   return (
-    <ul class="list-group col-12 col-md-4">
+    <ul class="list-group col">
       <li class="list-group-item bg-primary">
         <b>
           <Icon>fingerprint</Icon> Order ID:
