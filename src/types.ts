@@ -26,6 +26,17 @@ export interface Product {
   };
 }
 
+export interface Order {
+  type: "order";
+  id: string;
+  attributes: {
+    paid: boolean;
+    amount: number;
+    currency: string;
+    created_at: string;
+  };
+}
+
 export interface CartItem {
   product: Product;
   variant: Variant;

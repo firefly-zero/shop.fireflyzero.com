@@ -4,6 +4,7 @@ import { Alert } from "../components/alert";
 import { Loading } from "../components/loading";
 import { useCart } from "../cart";
 import { Icon } from "../components/icon";
+import { OrderCard } from "../components/order";
 
 export function Success() {
   const route = useRoute();
@@ -36,31 +37,7 @@ export function Success() {
   return (
     <div>
       {alert}
-      <ul class="list-group">
-        <li class="list-group-item bg-primary">
-          <b>
-            <Icon>fingerprint</Icon> Order ID
-          </b>
-          : {orderId}
-        </li>
-        {order.data && (
-          <>
-            <li class="list-group-item">
-              <b>
-                <Icon>money-bills</Icon> Amount paid:
-              </b>{" "}
-              {order.data.attributes.amount / 100}{" "}
-              {order.data.attributes.currency.toUpperCase()}
-            </li>
-            <li class="list-group-item">
-              <b>
-                <Icon>calendar-days</Icon> Placed on:
-              </b>{" "}
-              {order.data.attributes.created_at.split("T")[0]}
-            </li>
-          </>
-        )}
-      </ul>
+      <OrderCard>{order.data}</OrderCard>
     </div>
   );
 }
