@@ -12,7 +12,29 @@ export interface Cart {
 }
 
 function same(a: CartItem, b: CartItem): boolean {
-  return a.product.id === b.product.id && a.variant.id === b.variant.id;
+  return (
+    a.product.id === b.product.id &&
+    a.variant.id === b.variant.id &&
+    arraysEqual(a.bundleVariants, b.bundleVariants)
+  );
+}
+
+function arraysEqual<T>(a: T[] | null, b: T[] | null): boolean {
+  if (a === b) {
+    return true;
+  }
+  if (!a || !b) {
+    return false;
+  }
+  if (a.length !== b.length) {
+    return false;
+  }
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function saveCart(items: CartItem[]) {

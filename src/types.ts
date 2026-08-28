@@ -41,5 +41,6 @@ export interface Order {
 export interface CartItem {
   product: Product;
   variant: Variant;
+  bundleVariants: Variant[] | null;
   qty: number;
 }

@@ -13,15 +13,23 @@ type ProductCardProps = {
 
 export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
   const cart = useCart();
+  const [bundleVariants, setBundleVariants] = useState<Variant[]>([]);
 
   const product = props.children;
   const name: string = product.attributes.name;
   const price = formatPrice(product, props.products);
-  const footer = formatFooter(cart, product);
+  const footer = formatFooter(cart, product, bundleVariants);
   const bundle = product.attributes.products.map(({ slug, qty }) => {
     const subProduct = props.products.find((p) => p.attributes.slug === slug);
     if (subProduct) {
-      return <BundleItem qty={qty} product={subProduct} />;
+      return (
+        <BundleItem
+          qty={qty}
+          product={subProduct}
+          bundleVariants={bundleVariants}
+          setBundleVariants={setBundleVariants}
+        />
+      );
     }
   });
   return (
@@ -81,7 +89,7 @@ function formatPrice(product: Product, products: Product[]) {
   return <>€{firstPrice / 100}</>;
 }
 
-function formatFooter(cart: Cart, product: Product) {
+function formatFooter(cart: Cart, product: Product, bundleVariants: Variant[] | null) {
   const [qty, setQty] = useState(5);
 
   const variants = product.attributes.variants;
@@ -110,7 +118,9 @@ function formatFooter(cart: Cart, product: Product) {
           </div>
         </div>
         <div class="col">
-          <div class="col">{formatButton(cart, product, variant, qty)}</div>
+          <div class="col">
+            {formatButton(cart, product, variant, qty, bundleVariants)}
+          </div>
         </div>
       </div>
     );
@@ -128,7 +138,7 @@ function formatFooter(cart: Cart, product: Product) {
             <b>Items included:</b> {bundleSize}
           </div>
         )}
-        <div class="col">{formatButton(cart, product, variant, 1)}</div>
+        <div class="col">{formatButton(cart, product, variant, 1, bundleVariants)}</div>
       </div>
     );
   }
@@ -139,15 +149,21 @@ function formatFooter(cart: Cart, product: Product) {
         <b>{variant.attributes.name}</b>{" "}
         {!allPricesTheSame && "€" + variant.attributes.price / 100}
       </div>
-      <div class="col">{formatButton(cart, product, variant, 1)}</div>
+      <div class="col">{formatButton(cart, product, variant, 1, bundleVariants)}</div>
     </div>
   ));
 }
 
-function formatButton(cart: Cart, product: Product, variant: Variant, qty: number) {
+function formatButton(
+  cart: Cart,
+  product: Product,
+  variant: Variant,
+  qty: number,
+  bundleVariants: Variant[] | null,
+) {
   const { route } = useLocation();
 
-  const item = { product, variant, qty };
+  const item = { product, variant, qty, bundleVariants };
   const itemInCart = cart.get(item);
   const count = itemInCart?.qty || 0;
 

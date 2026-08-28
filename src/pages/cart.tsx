@@ -7,8 +7,6 @@ import { CartItemCard } from "../components/cart-item";
 import { api } from "../api";
 import { Alert } from "../components/alert";
 import { useState } from "preact/hooks";
-import { Product } from "../types";
-import { Header } from "../components/header";
 import { Container } from "../components/container";
 
 function detectCountry(): string {

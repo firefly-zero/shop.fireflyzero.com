@@ -1,17 +1,22 @@
 import { FunctionComponent } from "preact";
 import { Icon } from "./icon";
-import { Product } from "../types";
+import { Product, Variant } from "../types";
 import { useState } from "preact/hooks";
 
 interface Props {
   qty: number;
   product: Product;
+  bundleVariants: Variant[];
+  setBundleVariants: (v: Variant[]) => void;
 }
 
 /** A card showing info about a particular product in the bundle */
-export const BundleItem: FunctionComponent<Props> = ({ product, qty }) => {
-  const [variant, setVariant] = useState<string | null>(null);
-
+export const BundleItem: FunctionComponent<Props> = ({
+  product,
+  qty,
+  bundleVariants,
+  setBundleVariants,
+}) => {
   const price = product.attributes.variants[0].attributes.price;
   var variants = null;
   if (product.attributes.variants.length > 1) {
@@ -19,8 +24,13 @@ export const BundleItem: FunctionComponent<Props> = ({ product, qty }) => {
       <div class="btn-group">
         {product.attributes.variants.map((v) => (
           <button
-            class={"btn " + (v.id === variant ? "active btn-primary" : "btn-secondary")}
-            onClick={() => setVariant(v.id)}
+            class={
+              "btn " +
+              (bundleVariants.find((bv) => v.id == bv.id)
+                ? "active btn-primary"
+                : "btn-secondary")
+            }
+            onClick={() => setBundleVariants([v])}
           >
             {v.attributes.name}
           </button>
