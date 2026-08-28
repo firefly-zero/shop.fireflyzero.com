@@ -4,13 +4,13 @@ import { CartItem } from "../types";
 import { Cart } from "../cart";
 
 interface Props {
-  children: CartItem;
+  item: CartItem;
   cart: Cart;
 }
 
 export const CartItemCard: FunctionComponent<Props> = (props) => {
   const cart = props.cart;
-  const item = props.children;
+  const item = props.item;
   const { product, variant } = item;
 
   let price;
@@ -49,27 +49,14 @@ export const CartItemCard: FunctionComponent<Props> = (props) => {
             class="btn btn-secondary m-1"
             onClick={() => {
               cart.remove(item);
-              cart.add({
-                product: item.product,
-                variant: item.variant,
-                qty: item.qty - 1,
-              });
+              cart.add({ ...item, qty: item.qty - 1 });
             }}
           >
             <Icon>minus</Icon>
           </button>
         )}
 
-        <button
-          class="btn btn-secondary"
-          onClick={() =>
-            cart.add({
-              product: item.product,
-              variant: item.variant,
-              qty: 1,
-            })
-          }
-        >
+        <button class="btn btn-secondary" onClick={() => cart.add({ ...item, qty: 1 })}>
           <Icon>plus</Icon>
         </button>
       </div>

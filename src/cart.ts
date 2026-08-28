@@ -1,5 +1,5 @@
 import { useState } from "preact/hooks";
-import { CartItem, Product } from "./types";
+import { CartItem, Product, Variant } from "./types";
 
 export interface Cart {
   size: number;
@@ -15,11 +15,11 @@ function same(a: CartItem, b: CartItem): boolean {
   return (
     a.product.id === b.product.id &&
     a.variant.id === b.variant.id &&
-    arraysEqual(a.bundleVariants, b.bundleVariants)
+    sameBundleVariants(a.bundleVariants, b.bundleVariants)
   );
 }
 
-function arraysEqual<T>(a: T[] | null, b: T[] | null): boolean {
+function sameBundleVariants(a: Variant[] | null, b: Variant[] | null): boolean {
   if (a === b) {
     return true;
   }
@@ -30,7 +30,7 @@ function arraysEqual<T>(a: T[] | null, b: T[] | null): boolean {
     return false;
   }
   for (var i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) {
+    if (a[i].id !== b[i].id) {
       return false;
     }
   }

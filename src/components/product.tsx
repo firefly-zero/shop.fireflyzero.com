@@ -1,6 +1,6 @@
 import { FunctionComponent, VNode } from "preact";
 import { Icon } from "./icon";
-import { Product, Variant } from "../types";
+import { CartItem, Product, Variant } from "../types";
 import { Cart, useCart } from "../cart";
 import { useState } from "preact/hooks";
 import { useLocation } from "preact-iso";
@@ -119,7 +119,7 @@ function formatFooter(cart: Cart, product: Product, bundleVariants: Variant[] | 
         </div>
         <div class="col">
           <div class="col">
-            {formatButton(cart, product, variant, qty, bundleVariants)}
+            {formatButton(cart, { product, variant, qty, bundleVariants })}
           </div>
         </div>
       </div>
@@ -138,7 +138,9 @@ function formatFooter(cart: Cart, product: Product, bundleVariants: Variant[] | 
             <b>Items included:</b> {bundleSize}
           </div>
         )}
-        <div class="col">{formatButton(cart, product, variant, 1, bundleVariants)}</div>
+        <div class="col">
+          {formatButton(cart, { product, variant, qty: 1, bundleVariants })}
+        </div>
       </div>
     );
   }
@@ -149,21 +151,16 @@ function formatFooter(cart: Cart, product: Product, bundleVariants: Variant[] | 
         <b>{variant.attributes.name}</b>{" "}
         {!allPricesTheSame && "€" + variant.attributes.price / 100}
       </div>
-      <div class="col">{formatButton(cart, product, variant, 1, bundleVariants)}</div>
+      <div class="col">
+        {formatButton(cart, { product, variant, qty: 1, bundleVariants })}
+      </div>
     </div>
   ));
 }
 
-function formatButton(
-  cart: Cart,
-  product: Product,
-  variant: Variant,
-  qty: number,
-  bundleVariants: Variant[] | null,
-) {
+function formatButton(cart: Cart, item: CartItem) {
   const { route } = useLocation();
 
-  const item = { product, variant, qty, bundleVariants };
   const itemInCart = cart.get(item);
   const count = itemInCart?.qty || 0;
 

@@ -80,93 +80,89 @@ export function Cart() {
     }
   }
 
-  const itemCards = cart
-    .list()
-    .map((item) => <CartItemCard cart={cart}>{item}</CartItemCard>);
+  const itemCards = cart.list().map((item) => <CartItemCard cart={cart} item={item} />);
+  if (itemCards.length === 0) {
+    return (
+      <Container title="Cart">
+        {" "}
+        <p class="alert alert-warning">The cart is empty :(</p>
+      </Container>
+    );
+  }
 
   return (
     <Container title="Cart">
-      {itemCards.length > 0 ? (
-        <>
-          {itemCards}
+      {itemCards}
 
-          <article class="card mb-1">
-            <div class="card-body">
-              <h4 class="card-title">
-                {shipping.data ? (
-                  <>
-                    {shipping.data?.attributes.name}
-                    <span class="text-muted" style="display: inline-block; float: right">
-                      €{shipping.data.attributes.cost / 100}
-                    </span>
-                  </>
-                ) : (
-                  "Shipping"
-                )}
-              </h4>
+      <article class="card mb-1">
+        <div class="card-body">
+          <h4 class="card-title">
+            {shipping.data ? (
+              <>
+                {shipping.data?.attributes.name}
+                <span class="text-muted" style="display: inline-block; float: right">
+                  €{shipping.data.attributes.cost / 100}
+                </span>
+              </>
+            ) : (
+              "Shipping"
+            )}
+          </h4>
 
-              <label for="country-select" class="lead">
-                <Icon>earth-europe</Icon> Shipping country:
-              </label>
-              <select
-                class="form-select"
-                id="country-select"
-                onChange={(e) => {
-                  setCountry(e.currentTarget.value);
-                }}
-              >
-                <option value="BE" selected={country === "BE"}>
-                  🇧🇪 Belgium (BE)
-                </option>
-                <option value="LU" selected={country === "LU"}>
-                  🇱🇺 Luxembourg (LU)
-                </option>
-                <option value="NL" selected={country === "NL"}>
-                  🇳🇱 Netherlands (NL)
-                </option>
-              </select>
-            </div>
-          </article>
-
-          <div>
-            <label for="promo-input" class="lead">
-              <Icon>gift</Icon> Promotion code:
-            </label>
-            <input
-              type="text"
-              autoComplete="off"
-              class="form-control"
-              onInput={(e) => setPromo(e.currentTarget.value)}
-            />
-          </div>
-
-          <p class="lead mb-0">
-            <Icon>money-bills</Icon> Total:{" "}
-            <b>€{(total + (shipping.data?.attributes.cost || 0)) / 100}</b>{" "}
-            <span class="text-muted fs-6">(VAT included)</span>
-          </p>
-          <p>
-            if paying not in euros, the{" "}
-            <a
-              href="https://support.stripe.com/questions/understanding-your-currency-conversion-fees"
-              target="_blank"
-            >
-              currency exchange comission
-            </a>{" "}
-            will be calculated on the next step.
-          </p>
-          <Alert>{mut.error}</Alert>
-          <button
-            class="btn btn-primary w-100"
-            onClick={checkout}
-            disabled={mut.isPending}
+          <label for="country-select" class="lead">
+            <Icon>earth-europe</Icon> Shipping country:
+          </label>
+          <select
+            class="form-select"
+            id="country-select"
+            onChange={(e) => {
+              setCountry(e.currentTarget.value);
+            }}
           >
-            <Icon>money-bill-wave</Icon> proceed to checkout
-          </button>
-        </>
-      ) : (
-        <p class="alert alert-warning">The cart is empty :(</p>
-      )}
+            <option value="BE" selected={country === "BE"}>
+              🇧🇪 Belgium (BE)
+            </option>
+            <option value="LU" selected={country === "LU"}>
+              🇱🇺 Luxembourg (LU)
+            </option>
+            <option value="NL" selected={country === "NL"}>
+              🇳🇱 Netherlands (NL)
+            </option>
+          </select>
+        </div>
+      </article>
+
+      <div>
+        <label for="promo-input" class="lead">
+          <Icon>gift</Icon> Promotion code:
+        </label>
+        <input
+          type="text"
+          autoComplete="off"
+          class="form-control"
+          onInput={(e) => setPromo(e.currentTarget.value)}
+        />
+      </div>
+
+      <p class="lead mb-0">
+        <Icon>money-bills</Icon> Total:{" "}
+        <b>€{(total + (shipping.data?.attributes.cost || 0)) / 100}</b>{" "}
+        <span class="text-muted fs-6">(VAT included)</span>
+      </p>
+      <p>
+        if paying not in euros, the{" "}
+        <a
+          href="https://support.stripe.com/questions/understanding-your-currency-conversion-fees"
+          target="_blank"
+        >
+          currency exchange comission
+        </a>{" "}
+        will be calculated on the next step.
+      </p>
+      <Alert>{mut.error}</Alert>
+      <button class="btn btn-primary w-100" onClick={checkout} disabled={mut.isPending}>
+        <Icon>money-bill-wave</Icon> proceed to checkout
+      </button>
     </Container>
   );
 }
