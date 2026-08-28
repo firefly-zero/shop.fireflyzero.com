@@ -11,7 +11,7 @@ interface Props {
 export const CartItemCard: FunctionComponent<Props> = (props) => {
   const cart = props.cart;
   const item = props.item;
-  const { product, variant } = item;
+  const { product, variant, bundleVariants } = item;
 
   let price;
   if (product.attributes.slug === "donation") {
@@ -35,12 +35,18 @@ export const CartItemCard: FunctionComponent<Props> = (props) => {
           {variant.attributes.name !== "" && (
             <span class="text-muted"> ({variant.attributes.name})</span>
           )}
+          {bundleVariants && bundleVariants.length !== 0 && (
+            <span class="text-muted"> ({bundleVariants[0].attributes.name})</span>
+          )}
           <span class="text-muted" style="display: inline-block; float: right">
             {price}
           </span>
         </h4>
+        <p class="card-text">{product.attributes.description}</p>
+      </div>
 
-        <button class="btn m-1" onClick={() => cart.remove(item)}>
+      <div class="card-footer">
+        <button class="btn btn-secondary m-1" onClick={() => cart.remove(item)}>
           <Icon>trash</Icon>
         </button>
 
