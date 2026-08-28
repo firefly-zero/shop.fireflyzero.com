@@ -30,7 +30,13 @@ export function Cart() {
   const [promo, setPromo] = useState("");
   const [country, setCountry] = useState(detectCountry());
 
-  const items = cart.list().map((item) => ({ id: item.variant.id, qty: item.qty }));
+  const items = cart.list().map((item) => {
+    let variants = null;
+    if (item.bundleVariants) {
+      variants = item.bundleVariants.map((v) => v.id);
+    }
+    return { id: item.variant.id, qty: item.qty, variants };
+  });
   const mut = api.post("/checkout");
   const checkout = () => {
     mut.mutate({
@@ -84,7 +90,6 @@ export function Cart() {
   if (itemCards.length === 0) {
     return (
       <Container title="Cart">
-        {" "}
         <p class="alert alert-warning">The cart is empty :(</p>
       </Container>
     );
