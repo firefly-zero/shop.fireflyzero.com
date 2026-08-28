@@ -4,7 +4,6 @@ import { Alert } from "../components/alert";
 import { Loading } from "../components/loading";
 import { useCart } from "../cart";
 import { OrderCard } from "../components/order";
-import { Header } from "../components/header";
 import { Container } from "../components/container";
 
 export function Success() {

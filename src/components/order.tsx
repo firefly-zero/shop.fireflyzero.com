@@ -37,7 +37,7 @@ export const OrderCard: FunctionComponent<Props> = (props) => {
         <ul>
           {attrs.items.map((item) => (
             <li>
-              {item.name} <span class="text-muted">x{item.qty}</span>
+              {item.name} {item.qty !== 1 && <span class="text-muted">x{item.qty}</span>}
             </li>
           ))}
         </ul>
