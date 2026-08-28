@@ -26,6 +26,9 @@ export const CartItemCard: FunctionComponent<Props> = (props) => {
       </>
     );
   }
+  const bundleSize = product.attributes.products
+    .map(({ qty }) => qty)
+    .reduce((a, b) => a + b, 0);
 
   return (
     <article class="card mb-1">
@@ -42,7 +45,12 @@ export const CartItemCard: FunctionComponent<Props> = (props) => {
             {price}
           </span>
         </h4>
-        <p class="card-text">{product.attributes.description}</p>
+        <p class="card-text mb-1">{product.attributes.description}</p>
+        {bundleSize !== 0 && (
+          <p class="card-text">
+            <b>Items included:</b> {bundleSize}
+          </p>
+        )}
       </div>
 
       <div class="card-footer">
