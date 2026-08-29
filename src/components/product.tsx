@@ -48,7 +48,7 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
             )}
           </h4>
           <p class="card-text mb-1">{product.attributes.description}</p>
-          {bundle.length !== 0 && <p class="card-text">{bundle}</p>}
+          {bundle.length !== 0 && <div class="card-text">{bundle}</div>}
         </div>
         <div class="card-footer">{footer}</div>
       </article>

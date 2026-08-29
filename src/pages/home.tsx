@@ -1,6 +1,7 @@
 import { api } from "../api";
 import { Alert } from "../components/alert";
 import { Container } from "../components/container";
+import { Goal } from "../components/goal";
 import { Header } from "../components/header";
 import { Icon } from "../components/icon";
 import { Loading } from "../components/loading";
@@ -35,6 +36,7 @@ export function Home() {
         <Icon>earth-europe</Icon> We currently only ship within Benelux (Belgium,
         Netherlands, and Luxembourg). More countries will be added soon. Stay tuned!
       </div>
+      <Goal />
       <section class="row g-2">{cards}</section>
     </>
   );
