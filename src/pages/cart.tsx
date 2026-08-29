@@ -8,6 +8,7 @@ import { api } from "../api";
 import { Alert } from "../components/alert";
 import { useState } from "preact/hooks";
 import { Container } from "../components/container";
+import { Price } from "../components/price";
 
 function detectCountry(): string {
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -106,7 +107,7 @@ export function Cart() {
               <>
                 {shipping.data?.attributes.name}
                 <span class="text-muted" style="display: inline-block; float: right">
-                  €{shipping.data.attributes.cost / 100}
+                  <Price>{shipping.data.attributes.cost}</Price>
                 </span>
               </>
             ) : (
@@ -151,7 +152,9 @@ export function Cart() {
 
       <p class="lead mb-0">
         <Icon>money-bills</Icon> Total:{" "}
-        <b>€{(total + (shipping.data?.attributes.cost || 0)) / 100}</b>{" "}
+        <b>
+          <Price>{total + (shipping.data?.attributes.cost || 0)}</Price>
+        </b>{" "}
         <span class="text-muted fs-6">(VAT included)</span>
       </p>
       <p>

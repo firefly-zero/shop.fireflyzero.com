@@ -1,7 +1,6 @@
 import { FunctionComponent } from "preact";
-import { Icon } from "./icon";
 import { Product, Variant } from "../types";
-import { useState } from "preact/hooks";
+import { Price } from "./price";
 
 interface Props {
   qty: number;
@@ -58,7 +57,7 @@ export const BundleItem: FunctionComponent<Props> = ({
             </h5>
             <p class="card-text mb-1">{product.attributes.description}</p>
             <p class="card-text">
-              <b>Regular price:</b> €{price / 100}
+              <b>Regular price:</b> <Price>{price}</Price>
             </p>
             {variants}
           </div>

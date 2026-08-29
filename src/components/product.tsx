@@ -5,6 +5,7 @@ import { Cart, useCart } from "../cart";
 import { useState } from "preact/hooks";
 import { useLocation } from "preact-iso";
 import { BundleItem } from "./bundle-item";
+import { Price } from "./price";
 
 type ProductCardProps = {
   children: Product;
@@ -81,12 +82,15 @@ function formatPrice(product: Product, products: Product[]) {
     const totalPrice = prices.reduce((a, b) => a + b, 0);
     return (
       <>
-        €{firstPrice / 100} <del class="fs-6">€{totalPrice / 100}</del>
+        <Price>{firstPrice}</Price>{" "}
+        <del class="fs-6">
+          <Price>{totalPrice}</Price>
+        </del>
       </>
     );
   }
 
-  return <>€{firstPrice / 100}</>;
+  return <Price>{firstPrice}</Price>;
 }
 
 function formatFooter(cart: Cart, product: Product, bundleVariants: Variant[] | null) {
@@ -149,7 +153,7 @@ function formatFooter(cart: Cart, product: Product, bundleVariants: Variant[] | 
     <div class="row justify-content-between align-items-center mb-1">
       <div class="col fs-3">
         <b>{variant.attributes.name}</b>{" "}
-        {!allPricesTheSame && "€" + variant.attributes.price / 100}
+        {!allPricesTheSame && <Price>{variant.attributes.price}</Price>}
       </div>
       <div class="col">
         {formatButton(cart, { product, variant, qty: 1, bundleVariants })}

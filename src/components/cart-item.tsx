@@ -2,6 +2,7 @@ import { FunctionComponent } from "preact";
 import { Icon } from "./icon";
 import { CartItem } from "../types";
 import { Cart } from "../cart";
+import { Price } from "./price";
 
 interface Props {
   item: CartItem;
@@ -15,14 +16,14 @@ export const CartItemCard: FunctionComponent<Props> = (props) => {
 
   let price;
   if (product.attributes.slug === "donation") {
-    price = <>€{item.qty} ❤️</>;
+    price = <Price>{item.qty * 100}</Price>;
   } else if (item.qty === 1) {
-    price = <>€{variant.attributes.price / 100}</>;
+    price = <Price>{variant.attributes.price}</Price>;
   } else {
     price = (
       <>
-        €{variant.attributes.price / 100} x {item.qty} = €
-        {(variant.attributes.price * item.qty) / 100}
+        <Price>{variant.attributes.price}</Price> x {item.qty} ={" "}
+        <Price>{variant.attributes.price * item.qty}</Price>
       </>
     );
   }
