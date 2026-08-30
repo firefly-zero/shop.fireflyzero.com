@@ -61,7 +61,7 @@ export const BundleItem: FunctionComponent<Props> = ({
             </p>
             {variants}
             {variants && bundleVariants.length === 0 && (
-              <span class="text-danger"> (select one)</span>
+              <p class="text-danger"> (select one)</p>
             )}
           </div>
         </div>
