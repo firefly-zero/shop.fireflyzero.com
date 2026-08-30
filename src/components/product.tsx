@@ -19,10 +19,13 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
   const product = props.children;
   const name: string = product.attributes.name;
   const price = formatPrice(product, props.products);
-  const footer = formatFooter(cart, product, bundleVariants);
+  let hasBundleVariants = false;
   const bundle = product.attributes.products.map(({ slug, qty }) => {
     const subProduct = props.products.find((p) => p.attributes.slug === slug);
     if (subProduct) {
+      if (subProduct.attributes.variants.length > 1) {
+        hasBundleVariants = true;
+      }
       return (
         <BundleItem
           qty={qty}
@@ -33,6 +36,7 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
       );
     }
   });
+  const footer = formatFooter(cart, product, hasBundleVariants ? bundleVariants : null);
   return (
     <div class="col col-12 col-lg-6">
       <article class="card h-100">
@@ -197,11 +201,13 @@ function formatButton(cart: Cart, item: CartItem) {
     );
   }
 
+  const disabled = item.bundleVariants !== null && item.bundleVariants.length === 0;
   return (
     <button
       class="btn btn-primary"
       style="display: block; float: right"
       onClick={() => cart.add(item)}
+      disabled={disabled}
     >
       <Icon>cart-plus</Icon> add to cart
     </button>
