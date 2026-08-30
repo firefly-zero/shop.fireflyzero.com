@@ -22,6 +22,8 @@ export interface Product {
     description: string;
     image: string | null;
     out_of_stock: boolean;
+    badge: string | null;
+    badge_icon: string | null;
     variants: Variant[];
     products: { slug: string; qty: number }[];
   };

@@ -45,7 +45,17 @@ export const ProductCard: FunctionComponent<ProductCardProps> = (props) => {
         )}
         <div class="card-body">
           <h4 class="card-title">
-            {name}
+            {name}{" "}
+            {product.attributes.badge && (
+              <span class="badge rounded-pill bg-dark text-white fs-6">
+                {product.attributes.badge_icon && (
+                  <>
+                    <Icon>{product.attributes.badge_icon}</Icon>{" "}
+                  </>
+                )}
+                {product.attributes.badge}
+              </span>
+            )}
             {price && (
               <span style="float: right" class="text-muted">
                 {price}
