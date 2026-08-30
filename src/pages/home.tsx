@@ -26,9 +26,10 @@ export function Home() {
       </>
     );
   }
-  const cards = query.data.map((item: Product) => (
-    <ProductCard products={query.data}>{item}</ProductCard>
-  ));
+  const products: Product[] = query.data;
+  const cards = products
+    .filter((p) => !p.attributes.hidden)
+    .map((p) => <ProductCard products={products}>{p}</ProductCard>);
   return (
     <>
       <Header></Header>
