@@ -37,16 +37,15 @@ export const Header: FunctionComponent<Props> = (props) => {
       <nav class="col text-end lead">
         {auth.email ? (
           <>
-            {url !== "/me" && (
-              <a href="/me" class="btn">
-                <Icon>user</Icon> me
-              </a>
-            )}
-            {url !== "/cart" && (
-              <a href="/cart" class="btn btn-primary">
-                <Icon>cart-shopping</Icon> cart {cartSuffix}
-              </a>
-            )}
+            <a href="/" class="btn">
+              <Icon>t-shirt</Icon> products
+            </a>
+            <a href="/me" class="btn">
+              <Icon>user</Icon> me
+            </a>
+            <a href="/cart" class="btn btn-primary">
+              <Icon>cart-shopping</Icon> cart {cartSuffix}
+            </a>
           </>
         ) : (
           url !== "/sign-in" && (

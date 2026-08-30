@@ -8,9 +8,11 @@ interface Props {
 
 export const Container: FunctionComponent<Props> = (props) => {
   return (
-    <div class="row justify-content-center">
+    <div>
       <Header>{props.title}</Header>
-      <div class="col-12 col-md-6">{props.children}</div>
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-6">{props.children}</div>
+      </div>
     </div>
   );
 };
