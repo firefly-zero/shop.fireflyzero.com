@@ -10,14 +10,9 @@ interface Props {
 }
 
 export const Header: FunctionComponent<Props> = (props) => {
-  const { url, route } = useLocation();
+  const { url } = useLocation();
   const auth = useAuth();
   const cart = useCart();
-
-  const signOut = () => {
-    supabase.auth.signOut();
-    route("/");
-  };
 
   let cartSuffix = <></>;
   const cartSize = cart.list().length;
@@ -42,9 +37,11 @@ export const Header: FunctionComponent<Props> = (props) => {
       <nav class="col text-end lead">
         {auth.email ? (
           <>
-            <a class="btn btn-secondary" onClick={signOut}>
-              <Icon>right-from-bracket</Icon> sign out
-            </a>
+            {url !== "/me" && (
+              <a href="/me" class="btn">
+                <Icon>user</Icon> me
+              </a>
+            )}
             {url !== "/cart" && (
               <a href="/cart" class="btn btn-primary">
                 <Icon>cart-shopping</Icon> cart {cartSuffix}
@@ -54,7 +51,7 @@ export const Header: FunctionComponent<Props> = (props) => {
         ) : (
           url !== "/sign-in" && (
             <>
-              <a href="/sign-in" class="btn btn-secondary">
+              <a href="/sign-in" class="btn">
                 <Icon>right-from-bracket</Icon> sign in
               </a>
               <a href="/sign-in" class="btn btn-primary">
