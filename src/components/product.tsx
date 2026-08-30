@@ -100,6 +100,18 @@ function formatPrice(product: Product, products: Product[]) {
 function formatFooter(cart: Cart, product: Product, bundleVariants: Variant[] | null) {
   const [qty, setQty] = useState(5);
 
+  if (product.attributes.out_of_stock) {
+    return (
+      <button
+        class="btn btn-warning text-center"
+        style="display: block; float: right"
+        disabled={true}
+      >
+        <Icon>box-open</Icon> out of stock
+      </button>
+    );
+  }
+
   const variants = product.attributes.variants;
   let firstPrice = variants[0].attributes.price;
   let allPricesTheSame = variants.every(

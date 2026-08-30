@@ -21,6 +21,7 @@ export interface Product {
     slug: "donation" | string;
     description: string;
     image: string | null;
+    out_of_stock: boolean;
     variants: Variant[];
     products: { slug: string; qty: number }[];
   };
